@@ -1,2 +1,19 @@
-# ignore dataset RadarScenes
-/Datensatz
+# ignore...
+
+# dataset RadarScenes
+/dataset
+
+# models
+/data/
+*.h5
+*.pt
+
+# other
+__pycache__/
+.ipynb_checkpoints/
+.DS_Store
+*.pyc
+
+# IDE specific files
+.vscode/
+.idea/
