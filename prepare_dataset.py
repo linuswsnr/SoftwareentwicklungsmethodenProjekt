@@ -1,39 +1,5 @@
 import os
-import zipfile
 import json
-
-def extract_zip_file(zip_path, extract_to):
-    if not os.path.exists(zip_path):
-        print(f"Zip file not found: {zip_path}")
-        return False
-
-    with zipfile.ZipFile(zip_path, 'r') as zip_ref:
-        zip_ref.extractall(extract_to)
-    print(f"File successfully extracted to: {extract_to}")
-    return True
-
-def check_dataset_contents(dataset_folder):
-    if not os.path.exists(dataset_folder):
-        print(f"The folder '{dataset_folder}' does not exist.")
-        return False
-
-    # Search for at least one JSON file or binary dataset
-    found = False
-    for root, dirs, files in os.walk(dataset_folder):
-        for file in files:
-            if file.endswith(".json") or file.endswith(".bin"):
-                print(f"Found file: {os.path.join(root, file)}")
-                found = True
-                break
-        if found:
-            break
-
-    if not found:
-        print("No valid data files (.json or .bin) found!")
-        return False
-
-    print("Data files found and ready.")
-    return True
 
 def load_sample_json(dataset_folder):
     """Attempts to load a sample JSON file and display its content."""
@@ -53,9 +19,10 @@ def load_sample_json(dataset_folder):
     print("No JSON file found to load.")
 
 if __name__ == "__main__":
-    dataset_folder = os.path.join(os.getcwd(), "dataset")
-    zip_file_path = os.path.join(dataset_folder, "radarscenes.zip")
+    dataset_folder = os.path.join(os.getcwd(), "dataset", "RadarScenes")
 
-    if extract_zip_file(zip_file_path, dataset_folder):
-        if check_dataset_contents(dataset_folder):
-            load_sample_json(dataset_folder)
+    if os.path.exists(dataset_folder):
+        print(f"Dataset folder found: {dataset_folder}")
+        load_sample_json(dataset_folder)
+    else:
+        print(f"Dataset folder not found: {dataset_folder}")
