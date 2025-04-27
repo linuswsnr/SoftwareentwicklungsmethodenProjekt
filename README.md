@@ -149,3 +149,37 @@ conda activate radar_env
 
 conda deactivate
 
+#### Hinzufügen eines weiteren Pakets zu virtuellen Umgebung
+
+z.B. scikit-learn Bibliothek hinzufügen
+
+##### Variante 1:
+Schritt 1 - Paket über conda oder pip installieren bei aktiven virtuellen Umgebung
+conda install scikit-learn / pip install <paketname>
+
+Schritt 2 - environment.yaml aktualisieren 
+Um die virtuelle Umgebung zu aktualisieren, stelle sicher, dass du dich im entsprechenden Projektverzeichnis befindest,
+in dem sich die `environment.yml` Datei befindet. Führe dann den folgenden Befehl aus:
+
+conda env export --from-history > environment.yaml
+
+Durch den Zusatz "--from-history" werden nur manuell installierte Pakete aufgelistet und nicht alle Abhängigkeiten!
+
+##### Variante 2:
+Schritt 1 - environment.yaml anpassen
+Hinzuzufügendes Paket unter dependencies in der environments.yaml Datie aufführen
+
+Schritt 2 - Virtuelle Umgebung updaten
+Um die virtuelle Umgebung zu aktualisieren, stelle sicher, dass du dich im entsprechenden Projektverzeichnis befindest,
+in dem sich die `environment.yml` Datei befindet. Führe dann den folgenden Befehl aus:
+
+conda env update -n radar_env --file environment.yml --prune
+
+
+Nach dem Updaten der Umgebung darf das anschließende Pushen nicht vergessen werden! Durch das pullen oder fetchen der anderen Mitglieder des Repos können dann die Änderungen an der virtuellen Umgebung lokal integriert werden. Dafür ist ebenfalls das Updaten des Repos lokal notwendig. Dabei muss wieder sichergestellt werden, dass man sich im entsprechenden Projektverzeichnis befinden. Anschließend muss der folgende Befehl ausgeführt werden:
+
+conda env update --file environment.yml
+
+
+
+
