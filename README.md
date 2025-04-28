@@ -64,6 +64,7 @@ Prof. Dr. Tim Poguntke
 **Kooperation:**  
 In Zusammenarbeit mit **Continental**
 
+---
 
 ## Anleitung zur Einrichtung der virtuellen Umgebungen mittels mini-conda
 
