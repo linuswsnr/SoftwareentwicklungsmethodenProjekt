@@ -128,11 +128,11 @@ Wenn kein anderer Pfad angegeben wird, speichert Conda die virtuellen Umgebungen
 #### 2. Lokal im Projektverzeichnis:
 Wenn eine virtuelle Umgebung direkt im Projektordner erstellt werden soll, wird der Pfad explizit angeben (z. B. conda env create --prefix ./env). Die Umgebung wird dann im Projektverzeichnis unter dem angegebenen Pfad gespeichert (z. B. ./env), anstatt im globalen envs-Ordner.
 
-Für das Radar Scenes Projekt soll die Verwaltung über den envs Ordner erfolgen. 
+=> Für das Radar Scenes Projekt soll die Verwaltung über den envs Ordner erfolgen. 
 
 #### Erstellen einer virtuellen Umgebung
 
-Um nun eine virtuelle Umgebung zu erzeugen, welche die entsprechenden Abhängigkeiten für das Projekt enthält zu erzeugen wird über die Anaconda Prompt in das Verzeichnis navigiert, in den das Radar Scenes Projekt geclont wurde. Dort ist eine environments.yaml Datei zu finden, die die zu installierenden Pakete für das Projekt spezifiziert.
+Um nun eine virtuelle Umgebung zu erzeugen, welche die entsprechenden Abhängigkeiten für das Projekt enthält, wird über die Anaconda Prompt in das Verzeichnis navigiert, in den das Radar Scenes Projekt geclont wurde. Dort ist eine environments.yaml Datei zu finden, die die zu installierenden Pakete für das Projekt spezifiziert.
 
 Über folgenden Befehl wird die virtuelle Umgebung entsprechend den Spezifikationen der yaml-Datei im envs Ordner erstellt:
 
@@ -145,23 +145,31 @@ In der yaml-Datei wurde der Name für die virtuelle Umgebung festgelegt (radar_e
 
 Innerhalb der Anaconda Prompt kann die virtuelle Umgebung über folgenden Befehl aktiviert/deaktiviert werden.
 
-conda activate radar_env
+`conda activate radar_env`
 
-conda deactivate
+`conda deactivate`
 
-#### Hinzufügen eines weiteren Pakets zu virtuellen Umgebung
+#### Hinzufügen eines weiteren Pakets zur virtuellen Umgebung
 
 z.B. scikit-learn Bibliothek hinzufügen
 
 ##### Variante 1:
 Schritt 1 - Paket über conda oder pip installieren bei aktiven virtuellen Umgebung
-conda install scikit-learn / pip install <paketname>
+
+Mit conda (wenn über conda verfügbar):
+
+`conda install scikit-learn` 
+
+Oder mit pip (wenn es ein reines Python-Paket ist oder nicht über conda verfügbar):
+
+`pip install scikit-learn`
 
 Schritt 2 - environment.yaml aktualisieren 
-Um die virtuelle Umgebung zu aktualisieren, stelle sicher, dass du dich im entsprechenden Projektverzeichnis befindest,
-in dem sich die `environment.yml` Datei befindet. Führe dann den folgenden Befehl aus:
 
-conda env export --from-history > environment.yaml
+Um die virtuelle Umgebung zu aktualisieren, stelle sicher, dass du dich im entsprechenden Projektverzeichnis befindest,
+in dem sich die environment.yml Datei befindet. Führe dann den folgenden Befehl aus:
+
+`conda env export --from-history > environment.yaml`
 
 Durch den Zusatz "--from-history" werden nur manuell installierte Pakete aufgelistet und nicht alle Abhängigkeiten!
 
@@ -171,14 +179,14 @@ Hinzuzufügendes Paket unter dependencies in der environments.yaml Datie auffüh
 
 Schritt 2 - Virtuelle Umgebung updaten
 Um die virtuelle Umgebung zu aktualisieren, stelle sicher, dass du dich im entsprechenden Projektverzeichnis befindest,
-in dem sich die `environment.yml` Datei befindet. Führe dann den folgenden Befehl aus:
+in dem sich die environment.yml Datei befindet. Führe dann den folgenden Befehl aus:
 
-conda env update -n radar_env --file environment.yml --prune
+`conda env update -n radar_env --file environment.yml --prune`
 
 
 Nach dem Updaten der Umgebung darf das anschließende Pushen nicht vergessen werden! Durch das pullen oder fetchen der anderen Mitglieder des Repos können dann die Änderungen an der virtuellen Umgebung lokal integriert werden. Dafür ist ebenfalls das Updaten des Repos lokal notwendig. Dabei muss wieder sichergestellt werden, dass man sich im entsprechenden Projektverzeichnis befinden. Anschließend muss der folgende Befehl ausgeführt werden:
 
-conda env update --file environment.yml
+`conda env update --file environment.yml`
 
 
 
