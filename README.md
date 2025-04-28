@@ -68,20 +68,20 @@ In Zusammenarbeit mit **Continental**
 
 ## Anleitung zur Einrichtung der virtuellen Umgebungen mittels mini-conda
 
-Für das Radar Scenes Projekt wurde Miniconda als Umgebungsmanager gewählt, und statt einer traditionellen requirements.txt-Datei wird die environment.yml-Datei verwendet.
+Für das Radar Scenes Projekt wurde Miniconda als Umgebungsmanager gewählt, und statt einer traditionellen requirements.txt-Datei wird die environment.yaml-Datei verwendet.
 
 Dies bietet mehrere Vorteile:
 
 - Umgebungsmanagement: Mit Miniconda kann eine vollständig isolierte Umgebung für das Projekt erstellt werden, um Konflikte mit anderen Python-Projekten und Systembibliotheken zu vermeiden.
 - Komplettes Abhängigkeitsmanagement: Neben Python-Paketen können auch systemweite Bibliotheken und Abhängigkeiten effizient verwaltet werden, was insbesondere für komplexe Bibliotheken wie    PyTorch und Open3D wichtig ist.
-- Reproduzierbarkeit: Die Verwendung einer environment.yml-Datei stellt sicher, dass alle Teammitglieder dieselbe Entwicklungsumgebung haben, was die Konsistenz und Reproduzierbarkeit des Projekts gewährleistet.
+- Reproduzierbarkeit: Die Verwendung einer environment.yaml-Datei stellt sicher, dass alle Teammitglieder dieselbe Entwicklungsumgebung haben, was die Konsistenz und Reproduzierbarkeit des Projekts gewährleistet.
 - Flexibilität: Miniconda ermöglicht die Installation sowohl von conda- als auch pip-Paketen, was eine größere Flexibilität bei der Auswahl von Bibliotheken bietet.
 
 
 Folge diesem Link und lade die neueste Version von miniconda3 entsprechend deines Betriebssystems herunter:
 https://repo.anaconda.com/miniconda/
 
-### Die Installationsanleitung wird ein paar Fragen bezüglich deines individuellen Setups von miniconda3 stellen.
+### Setups von miniconda3 
 
 
 
@@ -133,7 +133,7 @@ Wenn eine virtuelle Umgebung direkt im Projektordner erstellt werden soll, wird 
 
 #### Erstellen einer virtuellen Umgebung
 
-Um nun eine virtuelle Umgebung zu erzeugen, welche die entsprechenden Abhängigkeiten für das Projekt enthält, wird über die Anaconda Prompt in das Verzeichnis navigiert, in den das Radar Scenes Projekt geclont wurde. Dort ist eine environments.yaml Datei zu finden, die die zu installierenden Pakete für das Projekt spezifiziert.
+Um nun eine virtuelle Umgebung zu erzeugen, welche die entsprechenden Abhängigkeiten für das Projekt enthält, wird über die Anaconda Prompt in das Verzeichnis navigiert, in den das Radar Scenes Projekt geclont wurde. Dort ist eine environment.yaml Datei zu finden, die die zu installierenden Pakete für das Projekt spezifiziert.
 
 Über folgenden Befehl wird die virtuelle Umgebung entsprechend den Spezifikationen der yaml-Datei im envs Ordner erstellt:
 
@@ -168,7 +168,7 @@ Oder mit pip (wenn es ein reines Python-Paket ist oder nicht über conda verfüg
 Schritt 2 - environment.yaml aktualisieren 
 
 Um die virtuelle Umgebung zu aktualisieren, stelle sicher, dass du dich im entsprechenden Projektverzeichnis befindest,
-in dem sich die environment.yml Datei befindet. Führe dann den folgenden Befehl aus:
+in dem sich die environment.yaml Datei befindet. Führe dann den folgenden Befehl aus:
 
 `conda env export --from-history > environment.yaml`
 
@@ -176,18 +176,19 @@ Durch den Zusatz "--from-history" werden nur manuell installierte Pakete aufgeli
 
 ##### Variante 2:
 Schritt 1 - environment.yaml anpassen
+
 Hinzuzufügendes Paket unter dependencies in der environments.yaml Datie aufführen
 
 Schritt 2 - Virtuelle Umgebung updaten
 Um die virtuelle Umgebung zu aktualisieren, stelle sicher, dass du dich im entsprechenden Projektverzeichnis befindest,
-in dem sich die environment.yml Datei befindet. Führe dann den folgenden Befehl aus:
+in dem sich die environment.yaml Datei befindet. Führe dann den folgenden Befehl aus:
 
-`conda env update -n radar_env --file environment.yml --prune`
+`conda env update -n radar_env --file environment.yaml --prune`
 
 
 Nach dem Updaten der Umgebung darf das anschließende Pushen nicht vergessen werden! Durch das pullen oder fetchen der anderen Mitglieder des Repos können dann die Änderungen an der virtuellen Umgebung lokal integriert werden. Dafür ist ebenfalls das Updaten des Repos lokal notwendig. Dabei muss wieder sichergestellt werden, dass man sich im entsprechenden Projektverzeichnis befinden. Anschließend muss der folgende Befehl ausgeführt werden:
 
-`conda env update --file environment.yml`
+`conda env update --file environment.yaml`
 
 
 
