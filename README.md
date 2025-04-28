@@ -136,7 +136,7 @@ Um nun eine virtuelle Umgebung zu erzeugen, welche die entsprechenden Abhängigk
 
 Über folgenden Befehl wird die virtuelle Umgebung entsprechend den Spezifikationen der yaml-Datei im envs Ordner erstellt:
 
-conda env create -f environment.yaml
+`conda env create -f environment.yaml`
 
 In der yaml-Datei wurde der Name für die virtuelle Umgebung festgelegt (radar_env). Dieser Name wird auch zum Aktivieren und Deaktivieren der virtuellen Umgebung verwendet.
 
