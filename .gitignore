@@ -7,6 +7,7 @@
 /data/
 *.h5
 *.pt
+*.pkl
 
 # other
 __pycache__/
