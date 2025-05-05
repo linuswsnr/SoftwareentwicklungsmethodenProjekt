@@ -10,11 +10,10 @@ Die Klassifikation erfolgt für jeden Zeitstempel, basierend auf Radar-Detektion
 
 ## 🗂️ Klassen
 
-- CAR  
+- CAR 
 - TWO-WHEELER  
 - PEDESTRIAN  
-- TRUCK  
-- OTHER  
+- Infrastructure 
 
 ---
 
