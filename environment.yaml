@@ -14,5 +14,6 @@ dependencies:
   - tqdm
   - jupyter
   - pip
+  - h5py
   - pip:
       - pyntcloud
