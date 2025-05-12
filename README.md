@@ -50,7 +50,7 @@ Die Performance des Klassifikationsalgorithmus wird anhand folgender Metriken ge
 - Michael Keil
 - Parsa Arzani
 - Selahaddin Öz
-- linus Wansner
+- Linus Wansner
 
 ---
 
