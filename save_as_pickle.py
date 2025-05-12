@@ -3,64 +3,51 @@ import h5py
 import pandas as pd
 from tqdm import tqdm
 
-# 🔧 Root-Pfad zum RadarScenes-Datensatz anpassen
-base_path = "dataset/RadarScenes/data"
 
-script_dir = os.path.dirname(os.path.abspath(__file__))
-base_path = os.path.join(script_dir, "dataset", "RadarScenes", "data")
+# Root path to the original sequences
+BASE_PATH = "dataset/RadarScenes/data"
 
-# 🔄 Alle Sequenzordner finden
-sequence_dirs = sorted([d for d in os.listdir(base_path) if d.startswith("sequence_")])
-
-all_data = []
-
-# for seq in tqdm(sequence_dirs, desc="Sequenzen laden"):
-#     seq_path = os.path.join(base_path, seq)
-#     h5_file_path = os.path.join(seq_path, "radar_data.h5")
-
-#     if not os.path.exists(h5_file_path):
-#         print(f"⚠️ Datei fehlt: {h5_file_path}")
-#         continue
-
-#     with h5py.File(h5_file_path, "r") as f:
-#         radar_data = f["radar_data"]
-#         data_dict = {name: radar_data[name] for name in radar_data.dtype.names}
-#         df = pd.DataFrame(data_dict)
-        
-#         # 🏷️ Sequenz-ID hinzufügen
-#         df["sequence"] = seq
-        
-#         all_data.append(df)
+# Root path to the filtered sequences saves as pickle files
+PKL_PATH = "dataset/RadarScenes_pickles"
 
 
-seq = sequence_dirs[0]  # Beispiel: nur die erste Sequenz laden
-seq_path = os.path.join(base_path, seq)
-h5_file_path = os.path.join(seq_path, "radar_data.h5")
+def main():
+    if not os.path.exists(PKL_PATH):
+        os.makedirs(PKL_PATH)
 
-if not os.path.exists(h5_file_path):
-    print(f"⚠️ Datei fehlt: {h5_file_path}")
+    sequence_dirs = sorted(
+        [d for d in os.listdir(BASE_PATH) if d.startswith("sequence_")],
+        key=extract_number
+    )
 
-with h5py.File(h5_file_path, "r") as f:
-    radar_data = f["radar_data"]
-    data_dict = {name: radar_data[name] for name in radar_data.dtype.names}
-    df = pd.DataFrame(data_dict)
-    
-    # 🏷️ Sequenz-ID hinzufügen
-    df["sequence"] = seq
-    
-    all_data.append(df)
+    for seq in tqdm(sequence_dirs, desc="Convert h5 to pickle"):
+        convert_sequence_to_pickle(seq, BASE_PATH, PKL_PATH)
 
 
+# Find and organize all sequence folders, ignore other files
+def extract_number(x):
+    try:
+        return int(x.split("_")[1])
+    except (IndexError, ValueError):
+        return float('inf')  # sorts invalid entries to the end
 
-# 🧩 Alle Sequenzen zusammenführen
-full_df = pd.concat(all_data, ignore_index=True)
 
-# 💾 Optional speichern (Pickle ist am schnellsten)
-full_df.to_pickle("radarscenes_1.pkl")
-# Alternativ: full_df.to_csv("radarscenes_all.csv", index=False)
+def convert_sequence_to_pickle(seq, BASE_PATH, PKL_PATH):
+    seq_path = os.path.join(BASE_PATH, seq)
+    h5_file_path = os.path.join(seq_path, "radar_data.h5")
 
-# ✅ Vorschau
-print(full_df)
-print("\n📐 Gesamtgröße:", full_df.shape)
-print("\n🔣 Label-Verteilung:")
-print(full_df["label_id"].value_counts())
+    if not os.path.exists(h5_file_path):
+        print(f"File missing: {h5_file_path}")
+        return
+
+    try:
+        with h5py.File(h5_file_path, "r") as f:
+            radar_data = f["radar_data"]
+            df = pd.DataFrame({name: radar_data[name] for name in radar_data.dtype.names})
+            df.to_pickle(os.path.join(PKL_PATH, f"{seq}.pkl"))
+    except Exception as e:
+        print(f"Error processing {h5_file_path}: {e}")
+
+
+if __name__ == "__main__":
+    main()
