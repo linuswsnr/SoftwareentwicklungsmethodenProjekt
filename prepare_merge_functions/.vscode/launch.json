@@ -1,0 +1,14 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run run_prepare.py from root",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/run_prepare.py",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "python": "${workspaceFolder}/venv/Scripts/python.exe"
+    }
+  ]
+}
