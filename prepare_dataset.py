@@ -2,7 +2,16 @@ import os
 import json
 
 def load_sample_json(dataset_folder):
-    """Attempts to load a sample JSON file and display its content."""
+    """
+    Attempts to load and display a sample JSON file from the given dataset folder.
+
+    Args:
+        dataset_folder (str): Path to the folder expected to contain JSON files.
+
+    Returns:
+        None. Prints the content of the first found JSON file (first 300 characters).
+        If no JSON is found or an error occurs, prints an appropriate message.
+    """
     for root, dirs, files in os.walk(dataset_folder):
         for file in files:
             if file.endswith(".json"):
