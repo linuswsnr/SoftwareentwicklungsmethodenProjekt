@@ -3,17 +3,13 @@
 # dataset RadarScenes
 /dataset
 
-# models
-/data/
-*.h5
-*.pt
-*.pkl
-
 # other
 __pycache__/
 .ipynb_checkpoints/
 .DS_Store
 *.pyc
+
+models/
 
 # IDE specific files
 .vscode/
