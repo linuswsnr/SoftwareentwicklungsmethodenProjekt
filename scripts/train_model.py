@@ -1,50 +1,24 @@
-import pandas as pd
-import numpy as np
-from sklearn.preprocessing import LabelEncoder
-from sklearn.metrics import classification_report
-from lightgbm import LGBMClassifier
-import joblib
-import os
+import os, joblib, sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+from radarscenes_classifier import data_preprocessing, training, evaluation
 
-# Trainingssequenzen 1 bis 5 laden
-dfs = []
-for i in range(1, 6):
-    path = f"dataset/RadarScenes_pickles/DataSeq_{i}.pkl"
-    dfs.append(pd.read_pickle(path))
 
-df = pd.concat(dfs, ignore_index=True)
+DATASET_DIR = os.path.join("dataset", "radar_scenes_pickles")
+REMOVE_CLASSES = [9, 11]  # Beispiel: Klasse 9 und 11 ausschließen (optional)
 
-# Mapping auf 4 Klassen
-id_to_class = {
-    0: "CAR", 1: "CAR", 2: "CAR", 3: "CAR", 4: "CAR",
-    5: "TWO-WHEELER", 6: "TWO-WHEELER",
-    7: "PEDESTRIAN", 8: "PEDESTRIAN",
-    9: "INFRASTRUCTURE", 10: "INFRASTRUCTURE", 11: "INFRASTRUCTURE"
-}
+MODEL_PATH = os.path.join("models", "model_lightgbm.pkl")
+ENCODER_PATH = os.path.join("models", "label_encoder.pkl")
 
-# Vorverarbeitung
-df = df[df["label_id"].isin(id_to_class.keys())]
-df = df.drop(columns=["timestamp", "uuid", "track_id", "sequence"], errors="ignore")
-df = df.dropna()
-df["label_name"] = df["label_id"].map(id_to_class)
-
-X = df.drop(columns=["label_id", "label_name"]).values
-y = df["label_name"].values
-
-# Label-Encoding
-le = LabelEncoder()
-y_encoded = le.fit_transform(y)
-
-# Modell trainieren
-model = LGBMClassifier()
-model.fit(X, y_encoded)
-
-# Trainingsauswertung
-y_pred = model.predict(X)
-print("Trainingsdaten-Ergebnisse (Sequenzen 1–5):")
-print(classification_report(y_encoded, y_pred, target_names=le.classes_))
-
-# Speichern
-os.makedirs("models", exist_ok=True)
-joblib.dump(model, "models/model_lightgbm.pkl")
-joblib.dump(le, "models/label_encoder.pkl")
+if __name__ == "__main__":
+    # Daten laden und vorverarbeiten
+    df_all = data_preprocessing.prepare_sequence_data(DATASET_DIR, remove_classes=REMOVE_CLASSES)
+    # Modell trainieren
+    model, label_enc = training.train_model(df_all)
+    # Model und Encoder speichern
+    os.makedirs("models", exist_ok=True)
+    joblib.dump(model, MODEL_PATH)
+    joblib.dump(label_enc, ENCODER_PATH)
+    print(f"Modell gespeichert nach {MODEL_PATH}")
+    print(f"Label-Encoder gespeichert nach {ENCODER_PATH}")
+    # (Optional) Trainingsergebnis auf Trainingsdaten ausgeben:
+    evaluation.evaluate_model(model, df_all, label_enc)
