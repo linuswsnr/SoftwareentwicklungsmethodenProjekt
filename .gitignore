@@ -1,16 +1,28 @@
-# ignore...
+# Daten
+dataset/
+models/
+*.pkl
 
-# dataset RadarScenes
-/dataset
-
-# other
+# Python
 __pycache__/
-.ipynb_checkpoints/
-.DS_Store
 *.pyc
 
-models/
+# Jupyter / Mac
+.ipynb_checkpoints/
+.DS_Store
 
-# IDE specific files
+# Logs
+*.log
+
+# Temp
+*.tmp
+*.bak
+*.swp
+
+# IDEs
 .vscode/
 .idea/
+
+# Umgebungen
+.env
+*.env
