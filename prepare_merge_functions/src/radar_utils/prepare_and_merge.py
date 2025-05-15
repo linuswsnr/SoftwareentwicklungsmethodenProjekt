@@ -62,3 +62,4 @@ def merge_label_ids(
     df = df.copy()
     df["label_id"] = df["label_id"].replace(merge_map)
     return df
+#در توسعه جدید من بجای حذف پارامتر ها اونو باید در دسته آدر قرار بدم و بجای اون باید فیچر هایی مثل سرعت و ... حذف کنم
