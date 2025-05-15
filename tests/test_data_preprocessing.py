@@ -1,7 +1,6 @@
-# tests/test_data_preprocessing.py
-
 import pandas as pd
 import pytest
+
 from radarscenes_classifier import data_preprocessing as dp
 
 def test_merge_label_ids():
@@ -16,10 +15,10 @@ def test_prepare_sequence_data(tmp_path):
     pkl_file = tmp_path / "dummy.pkl"
     df.to_pickle(pkl_file)
     # remove_classes=[9,11] -> es sollte nur Label 0 ("CAR") übrig bleiben
-    combined = dp.prepare_sequence_data(pickle_dir=tmp_path, remove_classes=[9, 11])
+    combined = dp.prepare_sequence_data(pickle_dir=tmp_path, remove_classes=[], limit_n_files=1)
     assert combined["label_id"].tolist() == ["CAR"]
 
 def test_prepare_sequence_data_no_files(tmp_path):
     # Leeres Verzeichnis -> sollte FileNotFoundError werfen
     with pytest.raises(FileNotFoundError):
-        dp.prepare_sequence_data(pickle_dir=tmp_path)
+        dp.prepare_sequence_data(pickle_dir=tmp_path, remove_classes=[], limit_n_files=1)

@@ -20,8 +20,8 @@ def evaluate_model(model, df: pd.DataFrame, label_encoder) -> None:
     y_pred = model.predict(X_eval)
     # Metriken berechnen
     target_names = label_encoder.classes_
-    print("📊 **Classification Report:**")
+    print("**Classification Report:**")
     print(classification_report(y_true, y_pred, target_names=target_names))
     cm = confusion_matrix(y_true, y_pred)
-    print("🔀 **Confusion Matrix:**")
+    print("**Confusion Matrix:**")
     print(cm)
