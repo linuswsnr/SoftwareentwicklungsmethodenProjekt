@@ -15,7 +15,7 @@ os.makedirs(output_path, exist_ok=True)
 sequence_dirs = sorted(
     [d for d in os.listdir(base_path) if d.startswith("sequence_")],
     key=lambda x: int(x.split("_")[1])
-)[:10]
+)[:158]
 
 for seq in tqdm(sequence_dirs, desc="Verarbeite Sequenzen"):
     seq_path = os.path.join(base_path, seq)
