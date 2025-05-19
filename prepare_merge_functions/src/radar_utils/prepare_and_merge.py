@@ -1,4 +1,31 @@
+<<<<<<< HEAD
 
+=======
+# -*- coding: utf-8 -*-
+"""sequence_utils.py
+
+Hilfsfunktionen für das RadarScenes-Projekt (Ticket #32)
+========================================================
+Dieses Modul reduziert alle *label_id*-Werte auf genau fünf
+übergeordnete Klassen.
+
+Konkretes Mapping gemäß Akzeptanzkriterien
+-----------------------------------------
+    0, 1   → 20  → "CAR"
+    5, 6   → 21  → "TWO_WHEELER"
+    7, 8   → 22  → "PEDESTRIAN"
+       11  → 23  → "INFRASTRUCTURE"
+    alle anderen IDs → 30 → "OTHER"
+
+Funktionen
+----------
+prepare_sequence_data(pickle_dir, ...)
+    Läd alle Pickle-Dateien, bereinigt sie und liefert ein DataFrame,
+    dessen Spalte ``label_id`` nur noch die fünf Klassen enthält.
+merge_label_ids(df, ...)
+    Führt die oben genannten Mappings aus.
+"""
+>>>>>>> 39e24d3 (Modulimport behoben und prepare_and_merge-Logik angepasst (unbekannte IDs → OTHER))
 
 from __future__ import annotations
 
