@@ -4,17 +4,31 @@ from typing import Optional, List
 
 
 # Mapping: numerische Label-IDs -> Klassenname (vereinheitlichte Labels)
-LABEL_MAPPING = {
+BASIS_LABEL_MAPPING = {
     0: "CAR", 1: "CAR", 2: "CAR", 3: "CAR", 4: "CAR",
     5: "TWO-WHEELER", 6: "TWO-WHEELER",
     7: "PEDESTRIAN", 8: "PEDESTRIAN",
     9: "INFRASTRUCTURE", 10: "INFRASTRUCTURE", 11: "INFRASTRUCTURE"
 }
 
-def merge_label_ids(df: pd.DataFrame, merge_map: dict) -> pd.DataFrame:
-    """Ersetzt label_id-Werte gemäß Mapping-Tabelle (merge_map) durch Klassen-Namen."""
+def merge_label_ids(df: pd.DataFrame, merge_map: Optional[dict] = None) -> pd.DataFrame:
+    """
+    Ersetzt label_id-Werte gemäß Mapping-Tabelle (merge_map) durch Klassen-Namen.
+    Wenn kein Mapping übergeben wird, wird das Standard-LABEL_MAPPING genutzt.
+    """
     df = df.copy()
-    df["label_id"] = df["label_id"].replace(merge_map)
+
+    if merge_map is None:
+        merge_map = BASIS_LABEL_MAPPING
+        df["label_id"] = df["label_id"].replace(merge_map)
+    else:
+        # Beispiel: {"VEHICLE": ["CAR", "TRUCK"]} → {"CAR": "VEHICLE", "TRUCK": "VEHICLE"}
+        reverse_map = {}
+        for target, sources in merge_map.items():
+            for source in sources:
+                reverse_map[source] = target
+        df["label_id"] = df["label_id"].replace(reverse_map)
+
     return df
 
 def prepare_sequence_data(
@@ -48,8 +62,19 @@ def prepare_sequence_data(
         frames.append(df)
 
     if not frames:
-        raise FileNotFoundError(f"⚠️ Keine Pickle-Dateien in {pickle_dir} gefunden.")
+        raise FileNotFoundError(f"Keine Pickle-Dateien in {pickle_dir} gefunden.")
 
     combined = pd.concat(frames, ignore_index=True)
-    combined = merge_label_ids(combined, LABEL_MAPPING)
+
+    """
+    # Beispiel für eine alternative Mapping-Tabelle
+    LABEL_MAPPING =  {
+    0: "CAR", 1: "CAR", 2: "CAR", 3: "CAR", 4: "CAR",
+    5: "TWO-WHEELER", 6: "TWO-WHEELER",
+    7: "PEDESTRIAN", 8: "PEDESTRIAN",
+    9: "INFRASTRUCTURE", 10: "INFRASTRUCTURE", 11: "INFRASTRUCTURE"
+    }
+    """
+
+    combined = merge_label_ids(combined) # <-- für Standard-Mapping, sonst merge_label_ids(combined, LABEL_MAPPING)
     return combined
