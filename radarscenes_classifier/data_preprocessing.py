@@ -18,23 +18,31 @@ def merge_label_ids(df: pd.DataFrame, merge_map: Optional[dict] = None) -> pd.Da
     """
     df = df.copy()
 
+    # Verbotene Quell-IDs, die NICHT auf "CAR" gemappt werden dürfen
+    FORBIDDEN_IDS_FOR_CAR = {7, 8, 9, 10, 11}
+
+
     if merge_map is None:
         merge_map = BASIS_LABEL_MAPPING
         df["label_id"] = df["label_id"].replace(merge_map)
     else:
-        # Beispiel: {"VEHICLE": ["CAR", "TRUCK"]} → {"CAR": "VEHICLE", "TRUCK": "VEHICLE"}
-        reverse_map = {}
-        for target, sources in merge_map.items():
-            for source in sources:
-                reverse_map[source] = target
-        df["label_id"] = df["label_id"].replace(reverse_map)
+        # Prüfen: gibt es verbotene IDs, die auf "CAR" gemappt werden sollen?
+        forbidden = [k for k, v in merge_map.items() if v == "CAR" and k in FORBIDDEN_IDS_FOR_CAR]
+        if forbidden:
+            raise ValueError(
+                f"Ungültige Zuordnung: Die folgenden label_ids dürfen nicht auf 'CAR' gemappt werden: {forbidden}"
+            )
+
+        df["label_id"] = df["label_id"].replace(merge_map)
+
 
     return df
 
 def prepare_sequence_data(
     pickle_dir: str,
     remove_classes: Optional[List[int]] = None,
-    limit_n_files: Optional[int] = None
+    limit_n_files: Optional[int] = None,
+    remove_features: Optional[List[str]] = None
 ) -> pd.DataFrame:
     """
     Lädt bis zu 'limit_n_files' .pkl-Dateien aus dem Verzeichnis und vereinigt sie in einem DataFrame.
@@ -47,17 +55,22 @@ def prepare_sequence_data(
     Rückgabe:
       - kombinierter DataFrame mit vereinheitlichten Labels
     """
-    import glob
 
     pkl_paths = glob.glob(os.path.join(pickle_dir, "*.pkl"))
+
     if limit_n_files is not None:
         pkl_paths = pkl_paths[:limit_n_files]
 
     frames = []
     for pkl_path in pkl_paths:
         df = pd.read_pickle(pkl_path)
+
         if remove_classes:
             df = df[~df["label_id"].isin(remove_classes)]
+
+        if remove_features:
+            df = df.drop(columns=[col for col in remove_features if col in df.columns], errors="ignore")
+
         df = df.dropna()
         frames.append(df)
 
@@ -66,15 +79,32 @@ def prepare_sequence_data(
 
     combined = pd.concat(frames, ignore_index=True)
 
-    """
-    # Beispiel für eine alternative Mapping-Tabelle
-    LABEL_MAPPING =  {
-    0: "CAR", 1: "CAR", 2: "CAR", 3: "CAR", 4: "CAR",
-    5: "TWO-WHEELER", 6: "TWO-WHEELER",
-    7: "PEDESTRIAN", 8: "PEDESTRIAN",
-    9: "INFRASTRUCTURE", 10: "INFRASTRUCTURE", 11: "INFRASTRUCTURE"
-    }
-    """
-
     combined = merge_label_ids(combined) # <-- für Standard-Mapping, sonst merge_label_ids(combined, LABEL_MAPPING)
     return combined
+
+"""
+# Beispiel für eine alternative Mapping-Tabelle
+LABEL_MAPPING =  {
+0: "CAR", 1: "CAR", 2: "CAR", 3: "CAR", 4: "CAR",
+5: "TWO-WHEELER", 6: "TWO-WHEELER",
+7: "PEDESTRIAN", 8: "PEDESTRIAN",
+9: "INFRASTRUCTURE", 10: "INFRASTRUCTURE", 11: "INFRASTRUCTURE"
+}
+"""
+
+test_map = {
+    0: "CAR", 1: "CAR", 2: "CAR", 3: "CAR", 4: "CAR", 7: "CAR",
+    5: "TWO-WHEELER", 6: "TWO-WHEELER",
+    8: "PEDESTRIAN",
+    9: "INFRASTRUCTURE", 10: "INFRASTRUCTURE", 11: "INFRASTRUCTURE"
+    }
+
+df = prepare_sequence_data("dataset/radar_scenes_pickles",None, 5,  remove_features=["x_cc"])  # Daten laden
+df_checked = merge_label_ids(df) # (test_map) einsetzten 
+
+features = ["x_cc", "y_cc", "rcs"]
+for f in features:
+    if f in df.columns:
+        print(f"{f} ✅ vorhanden")
+    else:
+        print(f"{f} ❌ fehlt")
