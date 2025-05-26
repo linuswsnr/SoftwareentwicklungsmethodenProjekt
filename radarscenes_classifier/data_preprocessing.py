@@ -1,6 +1,8 @@
 import os, glob
 import pandas as pd
 from typing import Optional, List
+from tqdm import tqdm
+
 
 
 # Mapping: numerische Label-IDs -> Klassenname (vereinheitlichte Labels)
@@ -41,9 +43,13 @@ def merge_label_ids(df: pd.DataFrame, merge_map: Optional[dict] = None) -> pd.Da
 def prepare_sequence_data(
     pickle_dir: str,
     remove_classes: Optional[List[int]] = None,
-    limit_n_files: Optional[int] = None,
+    limit_n_files: Optional[int] = None, 
+    split_ratio: float = 0.8,
+    use_existing_split: bool = False,
+    split_dir: str = "dataset/split_train_test",
+    save_new_split: bool = False,
     remove_features: Optional[List[str]] = None
-) -> pd.DataFrame:
+) -> tuple[pd.DataFrame, pd.DataFrame]:
     """
     Lädt bis zu 'limit_n_files' .pkl-Dateien aus dem Verzeichnis und vereinigt sie in einem DataFrame.
     
@@ -51,10 +57,27 @@ def prepare_sequence_data(
       - pickle_dir: Verzeichnis mit Pickle-Dateien
       - remove_classes: Liste von Label-IDs, die ausgeschlossen werden sollen
       - limit_n_files: Optional: Anzahl der zu ladenden Dateien begrenzen
+      - split_ration: Definiert Trains- und Testdaten-Verhältnis
+      - use_existing_split: Gibt an, ob ein bereits existierender Split verwendet werden soll
+      - split_dir: Pfad zum existierenden Split
     
     Rückgabe:
-      - kombinierter DataFrame mit vereinheitlichten Labels
+      - Zwei Panda Dataframes mit Trainings- und Testdaten, mit vereinheitlichten Labels
     """
+    
+    train_path = os.path.join(split_dir, "train.pkl")
+    test_path = os.path.join(split_dir, "test.pkl")
+
+    if use_existing_split:
+        if os.path.exists(train_path) and os.path.exists(test_path):
+            print(" Bestehender Split wird geladen.")
+
+
+            df_train = pd.read_pickle(train_path)
+            df_test = pd.read_pickle(test_path)
+            return df_train, df_test
+        else:
+            raise FileNotFoundError("Train/Test-Split konnte unter {split_dir} nicht gefunden werden")
 
     pkl_paths = glob.glob(os.path.join(pickle_dir, "*.pkl"))
 
@@ -62,7 +85,7 @@ def prepare_sequence_data(
         pkl_paths = pkl_paths[:limit_n_files]
 
     frames = []
-    for pkl_path in pkl_paths:
+    for pkl_path in tqdm(pkl_paths, desc="Lade Pickle-Dateien"):
         df = pd.read_pickle(pkl_path)
 
         if remove_classes:
@@ -80,7 +103,21 @@ def prepare_sequence_data(
     combined = pd.concat(frames, ignore_index=True)
 
     combined = merge_label_ids(combined) # <-- für Standard-Mapping, sonst merge_label_ids(combined, LABEL_MAPPING)
-    return combined
+    
+    # Split durchführen
+    from sklearn.model_selection import train_test_split
+    
+    df_train, df_test = train_test_split(
+        combined, test_size = (1 - split_ratio), random_state=42, shuffle=True
+    )
+
+    if save_new_split and not use_existing_split:
+            os.makedirs(split_dir, exist_ok=True)
+            df_train.to_pickle(train_path)
+            df_test.to_pickle(test_path)
+            print(" Neuer Split als Pickle gespeichert.")
+            
+    return df_train, df_test
 
 """
 # Beispiel für eine alternative Mapping-Tabelle
@@ -99,12 +136,12 @@ test_map = {
     9: "INFRASTRUCTURE", 10: "INFRASTRUCTURE", 11: "INFRASTRUCTURE"
     }
 
-df = prepare_sequence_data("dataset/radar_scenes_pickles",None, 5,  remove_features=["x_cc"])  # Daten laden
-df_checked = merge_label_ids(df) # (test_map) einsetzten 
+df_train, df_test = prepare_sequence_data("dataset/radar_scenes_pickles",None, 5,  remove_features=["x_cc"])  # Daten laden
+df_checked = merge_label_ids(df_train) # (test_map) einsetzten 
 
 features = ["x_cc", "y_cc", "rcs"]
 for f in features:
-    if f in df.columns:
-        print(f"{f} ✅ vorhanden")
+    if f in df_checked.columns:
+        print(f"{f} vorhanden")
     else:
-        print(f"{f} ❌ fehlt")
+        print(f"{f} fehlt")

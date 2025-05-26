@@ -176,7 +176,7 @@ Durch den Zusatz "--from-history" werden nur manuell installierte Pakete aufgeli
 ##### Variante 2:
 Schritt 1 - environment.yaml anpassen
 
-Hinzuzufügendes Paket unter dependencies in der environments.yaml Datie aufführen
+Hinzuzufügendes Paket unter dependencies in der environments.yaml Datei aufführen
 
 Schritt 2 - Virtuelle Umgebung updaten
 Um die virtuelle Umgebung zu aktualisieren, stelle sicher, dass du dich im entsprechenden Projektverzeichnis befindest,
