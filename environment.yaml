@@ -16,7 +16,6 @@ dependencies:
   - pip
   - h5py
   - joblib
-  - os
   - lightgbm
   - pip:
       - pyntcloud
