@@ -17,7 +17,7 @@ def merge_label_ids(
         df: pd.DataFrame, merge_map: Optional[dict] = None
         ) -> pd.DataFrame:
     """
-    Ersetzt label_id-Werte entsprechend der Mapping-Tabelle (merge_map) 
+    Ersetzt label_id-Werte entsprechend der Mapping-Tabelle (merge_map)
     durch Klassen-Namen.
     Wenn kein Mapping übergeben wird, wird das Standard-LABEL_MAPPING genutzt.
     """
@@ -31,10 +31,12 @@ def merge_label_ids(
         df["label_id"] = df["label_id"].replace(merge_map)
     else:
         # Prüfen: gibt es verbotene IDs, die auf "CAR" gemappt werden sollen?
-        forbidden = [k for k, v in merge_map.items() if v == "CAR" and k in FORBIDDEN_IDS_FOR_CAR]
+        forbidden = [k for k, v in merge_map.items() if v == "CAR" 
+                     and k in FORBIDDEN_IDS_FOR_CAR]
         if forbidden:
             raise ValueError(
-                f"Ungültige Zuordnung: Die folgenden label_ids dürfen nicht auf 'CAR' gemappt werden: {forbidden}"
+                f"Ungültige Zuordnung: Die folgenden label_ids dürfen nicht \
+                auf 'CAR' gemappt werden: {forbidden}"
             )
 
         df["label_id"] = df["label_id"].replace(merge_map)
@@ -60,7 +62,7 @@ def prepare_sequence_data(
       - remove_classes: Liste von Label-IDs, die ausgeschlossen werden sollen
       - limit_n_files: Optional: Anzahl der zu ladenden Dateien begrenzen
       - split_ration: Definiert Trains- und Testdaten-Verhältnis
-      - use_existing_split: Gibt an, ob ein bereits existierender Split verwendet werden soll
+      - use_existing_split: Möglichkeit bereits existierenden Split zu verwenden
       - split_dir: Pfad zum existierenden Split
     
     Rückgabe:
@@ -77,7 +79,8 @@ def prepare_sequence_data(
             df_test = pd.read_pickle(test_path)
             return df_train, df_test
         else:
-            raise FileNotFoundError("Train/Test-Split konnte unter {split_dir} nicht gefunden werden")
+            raise FileNotFoundError("Train/Test-Split konnte unter {split_dir} " \
+            "nicht gefunden werden")
 
     pkl_paths = glob.glob(os.path.join(pickle_dir, "*.pkl"))
 
@@ -92,7 +95,8 @@ def prepare_sequence_data(
             df = df[~df["label_id"].isin(remove_classes)]
 
         if remove_features:
-            df = df.drop(columns=[col for col in remove_features if col in df.columns], errors="ignore")
+            df = df.drop(columns=[col for col in remove_features 
+                                  if col in df.columns], errors="ignore")
 
         df = df.dropna()
         frames.append(df)
