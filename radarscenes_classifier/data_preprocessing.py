@@ -146,9 +146,9 @@ test_map = {
 
 # Daten laden
 df_train, df_test = prepare_sequence_data(
-    "dataset/radar_scenes_pickles", 
-    None, 
-    5,  
+    "dataset/radar_scenes_pickles",
+    None,
+    5,
     remove_features=["x_cc"]
     )
 

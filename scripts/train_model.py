@@ -1,9 +1,10 @@
-import os, sys
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
+import os
+import sys
 from radarscenes_classifier import data_preprocessing, training, evaluation
 import joblib
 
+sys.path.insert(0,
+                os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 DATASET_DIR = os.path.join("dataset", "radar_scenes_pickles")
 # REMOVE_CLASSES = [9, 11]  # Beispiel: Klasse 9 und 11 ausschließen (optional)
@@ -18,13 +19,16 @@ SPLIT_DIR = "dataset/split_train_test"
 
 if __name__ == "__main__":
     # Daten laden und vorverarbeiten
-    df_train, df_test = data_preprocessing.prepare_sequence_data(DATASET_DIR,
-                                                      remove_classes=REMOVE_CLASSES,
-                                                      limit_n_files=30, 
-                                                      split_ratio=0.8, 
-                                                      use_existing_split=True, 
-                                                      split_dir= SPLIT_DIR, 
-                                                      save_new_split=True)
+    df_train, df_test = data_preprocessing.prepare_sequence_data(
+        DATASET_DIR,
+        remove_classes=REMOVE_CLASSES,
+        limit_n_files=30,
+        split_ratio=0.8,
+        use_existing_split=True,
+        split_dir= SPLIT_DIR,
+        save_new_split=True
+    )
+
     # Modell trainieren
     model, label_enc = training.train_model(df_train)
     # Model und Encoder speichern
