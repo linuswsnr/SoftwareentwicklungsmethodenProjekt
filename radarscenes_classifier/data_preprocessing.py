@@ -31,7 +31,7 @@ def merge_label_ids(
         df["label_id"] = df["label_id"].replace(merge_map)
     else:
         # Prüfen: gibt es verbotene IDs, die auf "CAR" gemappt werden sollen?
-        forbidden = [k for k, v in merge_map.items() if v == "CAR" 
+        forbidden = [k for k, v in merge_map.items() if v == "CAR"
                      and k in FORBIDDEN_IDS_FOR_CAR]
         if forbidden:
             raise ValueError(
@@ -64,11 +64,12 @@ def prepare_sequence_data(
       - split_ration: Definiert Trains- und Testdaten-Verhältnis
       - use_existing_split: Möglichkeit bereits existierenden Split zu verwenden
       - split_dir: Pfad zum existierenden Split
-    
+
     Rückgabe:
-      - Zwei Panda Dataframes mit Trainings- und Testdaten, mit vereinheitlichten Labels
+      Zwei Panda Dataframes mit Trainings- und Testdaten, mit vereinheitlichten
+      Labels
     """
-    
+
     train_path = os.path.join(split_dir, "train.pkl")
     test_path = os.path.join(split_dir, "test.pkl")
 
@@ -79,8 +80,8 @@ def prepare_sequence_data(
             df_test = pd.read_pickle(test_path)
             return df_train, df_test
         else:
-            raise FileNotFoundError("Train/Test-Split konnte unter {split_dir} " \
-            "nicht gefunden werden")
+            raise FileNotFoundError("Train/Test-Split konnte unter " \
+            "{split_dir} nicht gefunden werden")
 
     pkl_paths = glob.glob(os.path.join(pickle_dir, "*.pkl"))
 
@@ -95,7 +96,7 @@ def prepare_sequence_data(
             df = df[~df["label_id"].isin(remove_classes)]
 
         if remove_features:
-            df = df.drop(columns=[col for col in remove_features 
+            df = df.drop(columns=[col for col in remove_features
                                   if col in df.columns], errors="ignore")
 
         df = df.dropna()
@@ -105,9 +106,8 @@ def prepare_sequence_data(
         raise FileNotFoundError(f"Keine Pickle-Dateien in {pickle_dir} gefunden.")
 
     combined = pd.concat(frames, ignore_index=True)
-
     combined = merge_label_ids(combined) # <-- für Standard-Mapping, sonst merge_label_ids(combined, LABEL_MAPPING)
-    
+
     # Split durchführen
     from sklearn.model_selection import train_test_split
     
@@ -120,7 +120,7 @@ def prepare_sequence_data(
             df_train.to_pickle(train_path)
             df_test.to_pickle(test_path)
             print(" Neuer Split als Pickle gespeichert.")
-            
+
     return df_train, df_test
 
 """
