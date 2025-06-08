@@ -3,6 +3,7 @@ import h5py
 import pandas as pd
 from tqdm import tqdm
 
+
 def load_sequence_raw(seq_path: str) -> pd.DataFrame:
     """Lädt die Radar-Rohdaten einer Sequenz und gibt sie als DataFrame zurück."""
     h5_file = os.path.join(seq_path, "radar_data.h5")
@@ -16,6 +17,7 @@ def load_sequence_raw(seq_path: str) -> pd.DataFrame:
     df["sequence"] = os.path.basename(seq_path)  # Sequenz-ID als Spalte hinzufügen
     return df
 
+
 def save_sequence_pickle(seq_path: str, output_dir: str) -> None:
     """Speichert die Daten einer Sequenz als Pickle-Datei im output_dir."""
     df = load_sequence_raw(seq_path)
@@ -28,9 +30,12 @@ def save_sequence_pickle(seq_path: str, output_dir: str) -> None:
     # Optional: Logging
     print(f"Pickle gespeichert: {output_path}")
 
+
 def generate_all_sequence_pickles(base_path: str, output_dir: str) -> None:
-    """Erstellt Pickle-Dateien für alle Sequenzen unter base_path im output_dir."""
-    seq_dirs = sorted(d for d in os.listdir(base_path) if d.startswith("sequence_"))
+    """Erstellt Pickle-Dateien für alle Sequenzen unter base_path 
+    im output_dir."""
+    seq_dirs = sorted(d for d in os.listdir(base_path) 
+                      if d.startswith("sequence_"))
     if not seq_dirs:
         raise FileNotFoundError(f"Keine Sequenzen in {base_path} gefunden.")
     for seq in tqdm(seq_dirs, desc="Sequenzen verarbeiten"):
