@@ -5,7 +5,7 @@ from tqdm import tqdm
 
 
 def load_sequence_raw(seq_path: str) -> pd.DataFrame:
-    """Lädt die Radar-Rohdaten einer Sequenz und gibt sie als 
+    """Lädt die Radar-Rohdaten einer Sequenz und gibt sie als
     DataFrame zurück."""
     h5_file = os.path.join(seq_path, "radar_data.h5")
     if not os.path.exists(h5_file):
@@ -16,7 +16,7 @@ def load_sequence_raw(seq_path: str) -> pd.DataFrame:
         data_dict = {name: radar_data[name] for name in radar_data.dtype.names}
     df = pd.DataFrame(data_dict)
     # Sequenz-ID als Spalte hinzufügen
-    df["sequence"] = os.path.basename(seq_path)  
+    df["sequence"] = os.path.basename(seq_path)
     return df
 
 
@@ -34,9 +34,9 @@ def save_sequence_pickle(seq_path: str, output_dir: str) -> None:
 
 
 def generate_all_sequence_pickles(base_path: str, output_dir: str) -> None:
-    """Erstellt Pickle-Dateien für alle Sequenzen unter base_path 
+    """Erstellt Pickle-Dateien für alle Sequenzen unter base_path
     im output_dir."""
-    seq_dirs = sorted(d for d in os.listdir(base_path) 
+    seq_dirs = sorted(d for d in os.listdir(base_path)
                       if d.startswith("sequence_"))
     if not seq_dirs:
         raise FileNotFoundError(f"Keine Sequenzen in {base_path} gefunden.")

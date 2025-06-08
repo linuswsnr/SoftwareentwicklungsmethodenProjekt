@@ -17,7 +17,8 @@ def merge_label_ids(
         df: pd.DataFrame, merge_map: Optional[dict] = None
         ) -> pd.DataFrame:
     """
-    Ersetzt label_id-Werte gemäß Mapping-Tabelle (merge_map) durch Klassen-Namen.
+    Ersetzt label_id-Werte entsprechend der Mapping-Tabelle (merge_map) 
+    durch Klassen-Namen.
     Wenn kein Mapping übergeben wird, wird das Standard-LABEL_MAPPING genutzt.
     """
     df = df.copy()
@@ -44,7 +45,7 @@ def merge_label_ids(
 def prepare_sequence_data(
     pickle_dir: str,
     remove_classes: Optional[List[int]] = None,
-    limit_n_files: Optional[int] = None, 
+    limit_n_files: Optional[int] = None,
     split_ratio: float = 0.8,
     use_existing_split: bool = False,
     split_dir: str = "dataset/split_train_test",
@@ -52,8 +53,8 @@ def prepare_sequence_data(
     remove_features: Optional[List[str]] = None
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
     """
-    Lädt bis zu 'limit_n_files' .pkl-Dateien aus dem Verzeichnis und vereinigt sie in einem DataFrame.
-    
+    Lädt .pkl-Dateien aus dem Verzeichnis und vereinigt sie in einem DataFrame.
+
     Parameter:
       - pickle_dir: Verzeichnis mit Pickle-Dateien
       - remove_classes: Liste von Label-IDs, die ausgeschlossen werden sollen
@@ -72,8 +73,6 @@ def prepare_sequence_data(
     if use_existing_split:
         if os.path.exists(train_path) and os.path.exists(test_path):
             print(" Bestehender Split wird geladen.")
-
-
             df_train = pd.read_pickle(train_path)
             df_test = pd.read_pickle(test_path)
             return df_train, df_test
