@@ -32,7 +32,8 @@ def merge_label_ids(
     else:
         # Prüfen: gibt es verbotene IDs, die auf "CAR" gemappt werden sollen?
         forbidden = [k for k, v in merge_map.items() if v == "CAR"
-                     and k in FORBIDDEN_IDS_FOR_CAR]
+                     and k in FORBIDDEN_IDS_FOR_CAR
+                    ]
         if forbidden:
             raise ValueError(
                 f"Ungültige Zuordnung: Die folgenden label_ids dürfen nicht \
@@ -141,7 +142,7 @@ test_map = {
     5: "TWO-WHEELER", 6: "TWO-WHEELER",
     8: "PEDESTRIAN",
     9: "INFRASTRUCTURE", 10: "INFRASTRUCTURE", 11: "INFRASTRUCTURE"
-    }
+}
 
 df_train, df_test = prepare_sequence_data("dataset/radar_scenes_pickles",None, 5,  remove_features=["x_cc"])  # Daten laden
 df_checked = merge_label_ids(df_train) # (test_map) einsetzten 
