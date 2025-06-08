@@ -55,7 +55,7 @@ def prepare_sequence_data(
     remove_features: Optional[List[str]] = None
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
     """
-    Lädt .pkl-Dateien aus dem Verzeichnis und vereinigt sie in einem DataFrame.
+    Lädt pkl-Dateien aus Verzeichnis und vereinigt sie in einem DataFrame.
 
     Parameter:
       - pickle_dir: Verzeichnis mit Pickle-Dateien
@@ -80,8 +80,8 @@ def prepare_sequence_data(
             df_test = pd.read_pickle(test_path)
             return df_train, df_test
         else:
-            raise FileNotFoundError("Train/Test-Split konnte unter "
-                                    "{split_dir} nicht gefunden werden")
+            raise FileNotFoundError("Train/Test-Split konnte unter \
+                                    {split_dir} nicht gefunden werden")
 
     pkl_paths = glob.glob(os.path.join(pickle_dir, "*.pkl"))
 
@@ -103,13 +103,14 @@ def prepare_sequence_data(
         frames.append(df)
 
     if not frames:
-        raise FileNotFoundError("Keine Pickle-Dateien in "
-                                "{pickle_dir} gefunden.")
+        raise FileNotFoundError("Keine Pickle-Dateien in \
+                                {pickle_dir} gefunden.")
 
     combined = pd.concat(frames, ignore_index=True)
+    
     # Standard, bei Bedarf LABEL_MAPPING nutzen
     combined = merge_label_ids(combined) 
-
+    
     # Split durchführen
     from sklearn.model_selection import train_test_split
 
