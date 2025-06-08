@@ -25,7 +25,7 @@ if __name__ == "__main__":
         limit_n_files=30,
         split_ratio=0.8,
         use_existing_split=True,
-        split_dir= SPLIT_DIR,
+        split_dir=SPLIT_DIR,
         save_new_split=True
     )
 
