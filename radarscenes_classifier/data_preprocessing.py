@@ -62,12 +62,12 @@ def prepare_sequence_data(
       - remove_classes: Liste von Label-IDs, die ausgeschlossen werden sollen
       - limit_n_files: Optional: Anzahl der zu ladenden Dateien begrenzen
       - split_ration: Definiert Trains- und Testdaten-Verhältnis
-      - use_existing_split: Möglichkeit bereits existierenden Split zu verwenden
+      - use_existing_split: Möglichkeit existierenden Split zu verwenden
       - split_dir: Pfad zum existierenden Split
 
     Rückgabe:
-      Zwei Panda Dataframes mit Trainings- und Testdaten, mit vereinheitlichten
-      Labels
+      Zwei Panda Dataframes mit Trainings- und Testdaten, mit 
+      vereinheitlichten Labels
     """
 
     train_path = os.path.join(split_dir, "train.pkl")
@@ -80,8 +80,8 @@ def prepare_sequence_data(
             df_test = pd.read_pickle(test_path)
             return df_train, df_test
         else:
-            raise FileNotFoundError("Train/Test-Split konnte unter " \
-            "{split_dir} nicht gefunden werden")
+            raise FileNotFoundError("Train/Test-Split konnte unter "
+                                    "{split_dir} nicht gefunden werden")
 
     pkl_paths = glob.glob(os.path.join(pickle_dir, "*.pkl"))
 
@@ -103,14 +103,16 @@ def prepare_sequence_data(
         frames.append(df)
 
     if not frames:
-        raise FileNotFoundError(f"Keine Pickle-Dateien in {pickle_dir} gefunden.")
+        raise FileNotFoundError("Keine Pickle-Dateien in "
+                                "{pickle_dir} gefunden.")
 
     combined = pd.concat(frames, ignore_index=True)
-    combined = merge_label_ids(combined) # <-- für Standard-Mapping, sonst merge_label_ids(combined, LABEL_MAPPING)
+    # Standard, bei Bedarf LABEL_MAPPING nutzen
+    combined = merge_label_ids(combined) 
 
     # Split durchführen
     from sklearn.model_selection import train_test_split
-    
+
     df_train, df_test = train_test_split(
         combined, test_size = (1 - split_ratio), random_state=42, shuffle=True
     )
