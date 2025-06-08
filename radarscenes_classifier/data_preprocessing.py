@@ -32,8 +32,7 @@ def merge_label_ids(
     else:
         # Prüfen: gibt es verbotene IDs, die auf "CAR" gemappt werden sollen?
         forbidden = [k for k, v in merge_map.items() if v == "CAR"
-                     and k in FORBIDDEN_IDS_FOR_CAR
-                    ]
+                     and k in FORBIDDEN_IDS_FOR_CAR]
         if forbidden:
             raise ValueError(
                 f"Ungültige Zuordnung: Die folgenden label_ids dürfen nicht \
@@ -67,7 +66,7 @@ def prepare_sequence_data(
       - split_dir: Pfad zum existierenden Split
 
     Rückgabe:
-      Zwei Panda Dataframes mit Trainings- und Testdaten, mit 
+      Zwei Panda Dataframes mit Trainings- und Testdaten, mit
       vereinheitlichten Labels
     """
 
@@ -108,24 +107,25 @@ def prepare_sequence_data(
                                 {pickle_dir} gefunden.")
 
     combined = pd.concat(frames, ignore_index=True)
-    
+
     # Standard, bei Bedarf LABEL_MAPPING nutzen
-    combined = merge_label_ids(combined) 
-    
+    combined = merge_label_ids(combined)
+
     # Split durchführen
     from sklearn.model_selection import train_test_split
 
     df_train, df_test = train_test_split(
-        combined, test_size = (1 - split_ratio), random_state=42, shuffle=True
+        combined, test_size=(1 - split_ratio), random_state=42, shuffle=True
     )
 
     if save_new_split and not use_existing_split:
-            os.makedirs(split_dir, exist_ok=True)
-            df_train.to_pickle(train_path)
-            df_test.to_pickle(test_path)
-            print(" Neuer Split als Pickle gespeichert.")
+        os.makedirs(split_dir, exist_ok=True)
+        df_train.to_pickle(train_path)
+        df_test.to_pickle(test_path)
+        print(" Neuer Split als Pickle gespeichert.")
 
     return df_train, df_test
+
 
 """
 # Beispiel für eine alternative Mapping-Tabelle
@@ -144,8 +144,15 @@ test_map = {
     9: "INFRASTRUCTURE", 10: "INFRASTRUCTURE", 11: "INFRASTRUCTURE"
 }
 
-df_train, df_test = prepare_sequence_data("dataset/radar_scenes_pickles",None, 5,  remove_features=["x_cc"])  # Daten laden
-df_checked = merge_label_ids(df_train) # (test_map) einsetzten 
+# Daten laden
+df_train, df_test = prepare_sequence_data(
+    "dataset/radar_scenes_pickles", 
+    None, 
+    5,  
+    remove_features=["x_cc"]
+    )
+
+df_checked = merge_label_ids(df_train)  # (test_map) einsetzen
 
 features = ["x_cc", "y_cc", "rcs"]
 for f in features:
