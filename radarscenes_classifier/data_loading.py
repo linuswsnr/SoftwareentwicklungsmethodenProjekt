@@ -5,7 +5,8 @@ from tqdm import tqdm
 
 
 def load_sequence_raw(seq_path: str) -> pd.DataFrame:
-    """Lädt die Radar-Rohdaten einer Sequenz und gibt sie als DataFrame zurück."""
+    """Lädt die Radar-Rohdaten einer Sequenz und gibt sie als 
+    DataFrame zurück."""
     h5_file = os.path.join(seq_path, "radar_data.h5")
     if not os.path.exists(h5_file):
         raise FileNotFoundError(f"Datei nicht gefunden: {h5_file}")
@@ -14,7 +15,8 @@ def load_sequence_raw(seq_path: str) -> pd.DataFrame:
         radar_data = f["radar_data"]  # strukturierter NumPy-Datensatz
         data_dict = {name: radar_data[name] for name in radar_data.dtype.names}
     df = pd.DataFrame(data_dict)
-    df["sequence"] = os.path.basename(seq_path)  # Sequenz-ID als Spalte hinzufügen
+    # Sequenz-ID als Spalte hinzufügen
+    df["sequence"] = os.path.basename(seq_path)  
     return df
 
 

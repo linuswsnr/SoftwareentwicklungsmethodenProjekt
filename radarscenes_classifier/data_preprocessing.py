@@ -1,9 +1,8 @@
-import os, glob
+import os
+import glob
 import pandas as pd
 from typing import Optional, List
 from tqdm import tqdm
-
-
 
 # Mapping: numerische Label-IDs -> Klassenname (vereinheitlichte Labels)
 BASIS_LABEL_MAPPING = {
@@ -13,7 +12,10 @@ BASIS_LABEL_MAPPING = {
     9: "INFRASTRUCTURE", 10: "INFRASTRUCTURE", 11: "INFRASTRUCTURE"
 }
 
-def merge_label_ids(df: pd.DataFrame, merge_map: Optional[dict] = None) -> pd.DataFrame:
+
+def merge_label_ids(
+        df: pd.DataFrame, merge_map: Optional[dict] = None
+        ) -> pd.DataFrame:
     """
     Ersetzt label_id-Werte gemäß Mapping-Tabelle (merge_map) durch Klassen-Namen.
     Wenn kein Mapping übergeben wird, wird das Standard-LABEL_MAPPING genutzt.
@@ -22,7 +24,6 @@ def merge_label_ids(df: pd.DataFrame, merge_map: Optional[dict] = None) -> pd.Da
 
     # Verbotene Quell-IDs, die NICHT auf "CAR" gemappt werden dürfen
     FORBIDDEN_IDS_FOR_CAR = {7, 8, 9, 10, 11}
-
 
     if merge_map is None:
         merge_map = BASIS_LABEL_MAPPING
@@ -37,8 +38,8 @@ def merge_label_ids(df: pd.DataFrame, merge_map: Optional[dict] = None) -> pd.Da
 
         df["label_id"] = df["label_id"].replace(merge_map)
 
-
     return df
+
 
 def prepare_sequence_data(
     pickle_dir: str,
