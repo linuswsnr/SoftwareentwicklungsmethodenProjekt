@@ -3,7 +3,7 @@ import os
 from radarscenes_classifier import data_loading
 
 sys.path.insert(
-    0, 
+    0,
     os.path.abspath(
         os.path.join(os.path.dirname(__file__), "..")
         )
