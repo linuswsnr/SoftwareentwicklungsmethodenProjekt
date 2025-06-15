@@ -1,5 +1,6 @@
 import os
 import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import joblib
 from radarscenes_classifier import data_preprocessing, training, evaluation
 
@@ -36,4 +37,4 @@ if __name__ == "__main__":
     print(f"Label-Encoder gespeichert nach {ENCODER_PATH}")
 
     # Optional: Trainingsergebnis auf Trainingsdaten ausgeben
-    evaluation.evaluate_model(model, df_train, label_enc)
+    evaluation.evaluate_model(model, df_train, label_enc, output_path="results/train_evaluation.json", plot_path="results/train_confusion_matrix.png")

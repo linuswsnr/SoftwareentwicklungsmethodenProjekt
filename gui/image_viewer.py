@@ -1,46 +1,102 @@
-from PySide6.QtWidgets import QWidget, QLabel, QScrollArea, QVBoxLayout
+import sys
+from PySide6.QtWidgets import QApplication, QMainWindow, QLabel, QWidget, QVBoxLayout, QHBoxLayout, QSplitter
 from PySide6.QtGui import QPixmap
 from PySide6.QtCore import Qt
+import os
 
-
-class ImageViewer(QWidget):
+class ImageViewer(QMainWindow):
     def __init__(self):
         super().__init__()
-        # Layout für ImageViewer (einfach vertikal, da nur ein Widget
-        # enthalten ist)
-        layout = QVBoxLayout(self)
-        layout.setContentsMargins(0, 0, 0, 0)
+        self.setWindowTitle("RadarScenes Evaluation Viewer")
+        self.setGeometry(100, 100, 1200, 800)
 
-        # QLabel zur Anzeige des Bildes
-        self.image_label = QLabel("Noch kein Bild geladen")
-        self.image_label.setAlignment(Qt.AlignCenter)
+        # Main widget and layout
+        main_widget = QWidget()
+        main_layout = QVBoxLayout()
 
-        # Optional: Rahmen um das Label (für besseres Erkennen des Bereichs)
-        # self.image_label.setFrameShape(QFrame.Box)
+        # Splitter to separate image area
+        splitter = QSplitter(Qt.Horizontal)
 
-        # QScrollArea, die das QLabel enthält
-        self.scroll_area = QScrollArea()
-        self.scroll_area.setWidget(self.image_label)
+        # Left side: show confusion matrix and classification metrics
+        left_widget = QWidget()
+        left_layout = QVBoxLayout()
 
-        # ScrollArea soll nur so groß wie nötig sein und
-        # Scrollbars zeigen, wenn nötig
-        self.scroll_area.setWidgetResizable(False)
+        # Label widgets
+        self.confusion_label = QLabel("Confusion Matrix")
+        self.confusion_image = QLabel()
+        self.metrics_label = QLabel("Classification Metrics")
+        self.metrics_image = QLabel()
 
-        # (Wenn man setWidgetResizable(True) setzt, würde das Label
-        # die ScrollArea ausfüllen. Hier belassen wir False, sodass
-        # das Label seine Größe vom Bild bezieht.)
-        layout.addWidget(self.scroll_area)
+        # Image click handlers
+        self.confusion_image.mousePressEvent = self.show_confusion_popup
+        self.metrics_image.mousePressEvent = self.show_metrics_popup
 
-    def set_image(self, file_path: str):
-        """Lädt das Bild vom gegebenen Dateipfad und zeigt es an."""
-        pixmap = QPixmap(file_path)
-        if pixmap.isNull():
-            # Bild konnte nicht geladen werden (unsupported format oder Fehler)
-            self.image_label.setText(
-                "Fehler: Bild konnte nicht geladen werden."
-            )
+        # Add to layout
+        left_layout.addWidget(self.confusion_label)
+        left_layout.addWidget(self.confusion_image)
+        left_layout.addWidget(self.metrics_label)
+        left_layout.addWidget(self.metrics_image)
+
+        left_widget.setLayout(left_layout)
+        splitter.addWidget(left_widget)
+
+        # Right side placeholder
+        right_widget = QWidget()
+        right_layout = QVBoxLayout()
+        right_widget.setLayout(right_layout)
+        splitter.addWidget(right_widget)
+
+        main_layout.addWidget(splitter)
+        main_widget.setLayout(main_layout)
+        self.setCentralWidget(main_widget)
+
+    def load_images(self):
+        confusion_path = "results/train_confusion_matrix_confusion.png"
+        metrics_path = "results/train_confusion_matrix_metrics.png"
+
+        if os.path.exists(confusion_path):
+            pixmap = QPixmap(confusion_path)
+            if not pixmap.isNull():
+                self.confusion_image.setPixmap(pixmap.scaledToWidth(500, Qt.SmoothTransformation))
+            else:
+                self.confusion_image.setText("Bild konnte nicht geladen werden: Confusion Matrix")
         else:
-            self.image_label.setPixmap(pixmap)
-            # Größe des Labels an Bildgröße anpassen,
-            # damit ScrollArea weiß, wann zu scrollen ist
-            self.image_label.adjustSize()
+            self.confusion_image.setText("Pfad nicht gefunden: Confusion Matrix")
+
+        if os.path.exists(metrics_path):
+            pixmap = QPixmap(metrics_path)
+            if not pixmap.isNull():
+                self.metrics_image.setPixmap(pixmap.scaledToWidth(500, Qt.SmoothTransformation))
+            else:
+                self.metrics_image.setText("Bild konnte nicht geladen werden: Classification Metrics")
+        else:
+            self.metrics_image.setText("Pfad nicht gefunden: Classification Metrics")
+
+    def show_confusion_popup(self, event):
+        if self.confusion_image.pixmap():
+            popup = ImagePopup(self.confusion_image.pixmap(), "Confusion Matrix")
+            popup.show()
+
+    def show_metrics_popup(self, event):
+        if self.metrics_image.pixmap():
+            popup = ImagePopup(self.metrics_image.pixmap(), "Classification Metrics")
+            popup.show()
+
+class ImagePopup(QWidget):
+    def __init__(self, pixmap: QPixmap, title: str = "Bildanzeige"):
+        super().__init__()
+        self.setWindowTitle(title)
+        self.setGeometry(200, 200, 1000, 800)
+
+        layout = QVBoxLayout()
+        label = QLabel()
+        label.setPixmap(pixmap.scaledToWidth(800, Qt.SmoothTransformation))
+        layout.addWidget(label)
+        self.setLayout(layout)
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    viewer = ImageViewer()
+    viewer.load_images()
+    viewer.show()
+    sys.exit(app.exec())
