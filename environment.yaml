@@ -20,3 +20,4 @@ dependencies:
   - lightgbm
   - pip:
       - pyntcloud
+      - PySide6

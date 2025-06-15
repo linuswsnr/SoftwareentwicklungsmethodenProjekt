@@ -47,6 +47,7 @@ class MainWindow(QMainWindow):
 
         # ImageViewer-Komponente für die Bildanzeige
         self.image_viewer = ImageViewer()
+        self.image_viewer.load_images()
         layout.addWidget(self.image_viewer)
 
     def open_image_file(self):
