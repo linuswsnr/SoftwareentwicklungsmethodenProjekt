@@ -1,7 +1,7 @@
-import numpy as np
 from sklearn.preprocessing import LabelEncoder
 from radarscenes_classifier import model
 import pandas as pd
+
 
 def train_model(df: pd.DataFrame):
     """
