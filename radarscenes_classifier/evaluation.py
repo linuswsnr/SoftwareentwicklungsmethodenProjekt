@@ -5,6 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
+
 def plot_confusion_matrix(cm, labels, plot_path):
     # Log-Skalierung vorbereiten (0 wird zu 0.1)
     cm_log = np.log10(np.where(cm == 0, 0.1, cm))
@@ -32,14 +33,17 @@ def plot_confusion_matrix(cm, labels, plot_path):
     plt.savefig(plot_path)
     plt.close()
 
+
 def plot_classification_report(report_dict, labels, plot_path):
     """
-    Erstellt eine PNG-Grafik des Classification Reports (Precision, Recall, F1-Score, Support).
+    Erstellt eine PNG-Grafik des Classification Reports
+    (Precision, Recall, F1-Score, Support).
     """
     import matplotlib.pyplot as plt
 
     metrics = ["precision", "recall", "f1-score", "support"]
-    values = {m: [report_dict[label][m] for label in labels] for m in metrics}
+    values = {m: [report_dict[label][m] for label in labels]
+              for m in metrics}
 
     fig, axs = plt.subplots(2, 2, figsize=(12, 8))
     axs = axs.flatten()
@@ -58,7 +62,8 @@ def plot_classification_report(report_dict, labels, plot_path):
     plt.close()
 
 
-def evaluate_model(model, df: pd.DataFrame, label_encoder, output_path: str = None, plot_path: str = None) -> None:
+def evaluate_model(model, df: pd.DataFrame, label_encoder,
+                   output_path: str = None, plot_path: str = None) -> None:
     """
     Bewertet das Modell und gibt die Metriken aus.
     Speichert optional JSON- und PNG-Dateien.
@@ -74,7 +79,9 @@ def evaluate_model(model, df: pd.DataFrame, label_encoder, output_path: str = No
     y_pred = model.predict(X_eval)
 
     target_names = label_encoder.classes_
-    report_dict = classification_report(y_true, y_pred, target_names=target_names, output_dict=True)
+    report_dict = classification_report(y_true, y_pred,
+                                        target_names=target_names,
+                                        output_dict=True)
     cm = confusion_matrix(y_true, y_pred)
     cm_list = cm.tolist()
 
@@ -96,7 +103,9 @@ def evaluate_model(model, df: pd.DataFrame, label_encoder, output_path: str = No
     # Visualisierung speichern
     if plot_path:
         # Konfusionsmatrix
-        plot_confusion_matrix(cm, target_names, plot_path.replace(".png", "_confusion.png"))
+        plot_confusion_matrix(cm, target_names,
+                              plot_path.replace(".png", "_confusion.png"))
 
         # Klassifikationsmetriken
-        plot_classification_report(report_dict, target_names, plot_path.replace(".png", "_metrics.png"))
+        plot_classification_report(report_dict, target_names,
+                                   plot_path.replace(".png", "_metrics.png"))

@@ -1,8 +1,9 @@
 import sys
-from PySide6.QtWidgets import QApplication, QMainWindow, QLabel, QWidget, QVBoxLayout, QHBoxLayout, QSplitter
+from PySide6.QtWidgets import QApplication, QMainWindow, QLabel, QWidget, QVBoxLayout, QSplitter  # noqa: E501
 from PySide6.QtGui import QPixmap
 from PySide6.QtCore import Qt
 import os
+
 
 class ImageViewer(QMainWindow):
     def __init__(self):
@@ -57,30 +58,39 @@ class ImageViewer(QMainWindow):
         if os.path.exists(confusion_path):
             pixmap = QPixmap(confusion_path)
             if not pixmap.isNull():
-                self.confusion_image.setPixmap(pixmap.scaledToWidth(500, Qt.SmoothTransformation))
+                self.confusion_image.setPixmap(
+                    pixmap.scaledToWidth(500, Qt.SmoothTransformation)
+                )
             else:
-                self.confusion_image.setText("Bild konnte nicht geladen werden: Confusion Matrix")
+                self.confusion_image.setText(
+                    "Bild konnte nicht geladen werden: Confusion Matrix"
+                )
         else:
-            self.confusion_image.setText("Pfad nicht gefunden: Confusion Matrix")
+            self.confusion_image.setText("Pfad nicht gefunden: Confusion Matrix")  # noqa: E501
 
         if os.path.exists(metrics_path):
             pixmap = QPixmap(metrics_path)
             if not pixmap.isNull():
-                self.metrics_image.setPixmap(pixmap.scaledToWidth(500, Qt.SmoothTransformation))
+                self.metrics_image.setPixmap(
+                    pixmap.scaledToWidth(500, Qt.SmoothTransformation)
+                )
             else:
-                self.metrics_image.setText("Bild konnte nicht geladen werden: Classification Metrics")
+                self.metrics_image.setText(
+                    "Bild konnte nicht geladen werden: Classification Metrics"
+                )
         else:
-            self.metrics_image.setText("Pfad nicht gefunden: Classification Metrics")
+            self.metrics_image.setText("Pfad nicht gefunden: Classification Metrics")  # noqa: E501
 
     def show_confusion_popup(self, event):
         if self.confusion_image.pixmap():
-            popup = ImagePopup(self.confusion_image.pixmap(), "Confusion Matrix")
+            popup = ImagePopup(self.confusion_image.pixmap(), "Confusion Matrix")  # noqa: E501
             popup.show()
 
     def show_metrics_popup(self, event):
         if self.metrics_image.pixmap():
-            popup = ImagePopup(self.metrics_image.pixmap(), "Classification Metrics")
+            popup = ImagePopup(self.metrics_image.pixmap(), "Classification Metrics")  # noqa: E501
             popup.show()
+
 
 class ImagePopup(QWidget):
     def __init__(self, pixmap: QPixmap, title: str = "Bildanzeige"):
@@ -93,6 +103,7 @@ class ImagePopup(QWidget):
         label.setPixmap(pixmap.scaledToWidth(800, Qt.SmoothTransformation))
         layout.addWidget(label)
         self.setLayout(layout)
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
