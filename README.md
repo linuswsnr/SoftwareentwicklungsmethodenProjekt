@@ -65,12 +65,12 @@ In Zusammenarbeit mit **Continental**
 
 ## Anleitung zur Einrichtung der virtuellen Umgebungen mittels mini-conda
 
-Für das Radar Scenes Projekt wurde Miniconda als Umgebungsmanager gewählt, und statt einer traditionellen requirements.txt-Datei wird die environment.yaml-Datei verwendet.
+Für das Radar Scenes Projekt wurde Miniconda als Umgebungsmanager gewählt und statt einer traditionellen requirements.txt-Datei wird die environment.yaml-Datei verwendet.
 
 Dies bietet mehrere Vorteile:
 
 - Umgebungsmanagement: Mit Miniconda kann eine vollständig isolierte Umgebung für das Projekt erstellt werden, um Konflikte mit anderen Python-Projekten und Systembibliotheken zu vermeiden.
-- Komplettes Abhängigkeitsmanagement: Neben Python-Paketen können auch systemweite Bibliotheken und Abhängigkeiten effizient verwaltet werden, was insbesondere für komplexe Bibliotheken wie    PyTorch und Open3D wichtig ist.
+- Komplettes Abhängigkeitsmanagement: Neben Python-Paketen können auch systemweite Bibliotheken und Abhängigkeiten effizient verwaltet werden, was insbesondere für komplexe Bibliotheken wie PyTorch und Open3D wichtig ist.
 - Reproduzierbarkeit: Die Verwendung einer environment.yaml-Datei stellt sicher, dass alle Teammitglieder dieselbe Entwicklungsumgebung haben, was die Konsistenz und Reproduzierbarkeit des Projekts gewährleistet.
 - Flexibilität: Miniconda ermöglicht die Installation sowohl von conda- als auch pip-Paketen, was eine größere Flexibilität bei der Auswahl von Bibliotheken bietet.
 
@@ -78,13 +78,12 @@ Dies bietet mehrere Vorteile:
 Folge diesem Link und lade die neueste Version von miniconda3 entsprechend deines Betriebssystems herunter:
 https://repo.anaconda.com/miniconda/
 
-### Setups von miniconda3 
+### Setup von miniconda3 
 
-
-
-Folgendes wird bei der Installation empfohlen / nicht empfohlen oder ist optional auszuwählen.
 
 Der vordefinierte Installationspfad von miniconda sollte nicht geändert werden!
+
+Folgendes wird bei der Installation empfohlen / nicht empfohlen oder ist optional auszuwählen.
 
 #### Empfohlen:
 - Create shortcuts (supported packages only).
@@ -93,19 +92,20 @@ Der vordefinierte Installationspfad von miniconda sollte nicht geändert werden!
 #### Optional:
 - Register Miniconda3 as my default Python 3.12
 
--> Wenn du die Option „Register Miniconda3 as my default Python 3.12” auswählst, wird Miniconda3 als Standard-Python-Interpreter auf deinem System registriert. Dies bedeutet, dass alle Programme, die Python benötigen (wie z. B. VSCode oder die Kommandozeile), automatisch den Python 3.12-Interpreter von Miniconda verwenden.
+→ Wenn du die Option „Register Miniconda3 as my default Python 3.12” auswählst, wird Miniconda3 als Standard-Python-Interpreter auf deinem System registriert. Dies bedeutet, dass alle Programme, die Python benötigen (wie z. B. VSCode oder die Kommandozeile), automatisch den Python 3.12-Interpreter von Miniconda verwenden.
 
 Auswirkungen:
-Standard-Python-Interpreter: Der Python-Interpreter von Miniconda (Python 3.12) wird als Standard für alle Programme festgelegt, wenn keine spezifische Conda-Umgebung aktiviert ist.
 
-Virtuelle Umgebungen bleiben unberührt: Wenn du eine Conda-Umgebung mit einer anderen Python-Version (z. B. Python 3.10) aktivierst, wird der Interpreter dieser Umgebung genutzt, unabhängig vom Standard-Interpreter von Miniconda.
+- Standard-Python-Interpreter: Der Python-Interpreter von Miniconda (Python 3.12) wird als Standard für alle Programme festgelegt, wenn keine spezifische Conda-Umgebung aktiviert ist.
+
+- Virtuelle Umgebungen bleiben unberührt: Wenn du eine Conda-Umgebung mit einer anderen Python-Version (z. B. Python 3.10) aktivierst, wird der Interpreter dieser Umgebung genutzt, unabhängig vom Standard-Interpreter von Miniconda.
 
 Empfehlung: Diese Option ist optional, da sie den Standard-Python-Interpreter auf deinem System ändert, aber keine Auswirkungen auf die Nutzung von Conda-Umgebungen hat, die jeweils ihre eigene Python-Version verwenden.
 
 #### Nicht empfohlen:
 - Add Miniconda3 to my PATH environment variable
 
--> Das Hinzufügen von Miniconda zum PATH-Umgebungsvariablen kann zu Konflikten mit anderen Python-Installationen oder Programmen führen, die bereits in deinem Systempfad vorhanden sind. Diese Konflikte können dazu führen, dass verschiedene Python-Versionen miteinander in Konflikt geraten und unerwartete Ergebnisse oder Fehler auftreten.
+→ Das Hinzufügen von Miniconda zum PATH-Umgebungsvariablen kann zu Konflikten mit anderen Python-Installationen oder Programmen führen, die bereits in deinem Systempfad vorhanden sind. Diese Konflikte können dazu führen, dass verschiedene Python-Versionen miteinander in Konflikt geraten und unerwartete Ergebnisse oder Fehler auftreten.
 
 Auswirkungen: 
 Potenzielle Konflikte: Wenn du andere Python-Versionen auf deinem System hast, könnte das Hinzufügen von Miniconda zum PATH dazu führen, dass die falsche Python-Version verwendet wird.
@@ -126,7 +126,7 @@ Wenn kein anderer Pfad angegeben wird, speichert Conda die virtuellen Umgebungen
 #### 2. Lokal im Projektverzeichnis:
 Wenn eine virtuelle Umgebung direkt im Projektordner erstellt werden soll, wird der Pfad explizit angeben (z. B. conda env create --prefix ./env). Die Umgebung wird dann im Projektverzeichnis unter dem angegebenen Pfad gespeichert (z. B. ./env), anstatt im globalen envs-Ordner.
 
-=> Für das Radar Scenes Projekt soll die Verwaltung über den envs Ordner erfolgen. 
+⇒ Für das Radar Scenes Projekt soll die Verwaltung über den envs Ordner erfolgen. 
 
 #### Erstellen einer virtuellen Umgebung
 
