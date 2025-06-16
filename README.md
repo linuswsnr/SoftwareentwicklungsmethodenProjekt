@@ -98,7 +98,7 @@ Auswirkungen:
 
 1) Standard-Python-Interpreter: Der Python-Interpreter von Miniconda (Python 3.12) wird als Standard für alle Programme festgelegt, wenn keine spezifische Conda-Umgebung aktiviert ist.
 
-- Virtuelle Umgebungen bleiben unberührt: Wenn du eine Conda-Umgebung mit einer anderen Python-Version (z. B. Python 3.10) aktivierst, wird der Interpreter dieser Umgebung genutzt, unabhängig vom Standard-Interpreter von Miniconda.
+2) Virtuelle Umgebungen bleiben unberührt: Wenn du eine Conda-Umgebung mit einer anderen Python-Version (z. B. Python 3.10) aktivierst, wird der Interpreter dieser Umgebung genutzt, unabhängig vom Standard-Interpreter von Miniconda.
 
 
 #### Nicht empfohlen:
@@ -108,9 +108,9 @@ Das Hinzufügen von Miniconda zum PATH-Umgebungsvariablen kann zu Konflikten mit
 
 Auswirkungen:
 
-- Potenzielle Konflikte: Andere installierte Python-Versionen könnten von Miniconda überschrieben oder beeinträchtigt werden, was zu unerwartetem Verhalten führen kann.
+1) Potenzielle Konflikte: Andere installierte Python-Versionen könnten von Miniconda überschrieben oder beeinträchtigt werden, was zu unerwartetem Verhalten führen kann.
 
-- Komplexere Verwaltung: Die parallele Nutzung mehrerer Python-Versionen wird komplizierter, da Miniconda außerhalb aktivierter Umgebungen als Standard-Interpreter fungiert.
+2) Komplexere Verwaltung: Die parallele Nutzung mehrerer Python-Versionen wird komplizierter, da Miniconda außerhalb aktivierter Umgebungen als Standard-Interpreter fungiert.
 
 Empfehlung: Verzichte darauf, Miniconda dem PATH hinzuzufügen. Nutze stattdessen den Anaconda Prompt oder PowerShell, um Conda-Umgebungen gezielt zu aktivieren. So bleibt deine Systemumgebung sauber und stabil, und du vermeidest Versionskonflikte.
 
@@ -153,7 +153,7 @@ Innerhalb der Anaconda Prompt kann die virtuelle Umgebung über folgenden Befehl
 z.B. scikit-learn Bibliothek hinzufügen
 
 ##### Variante 1:
-Schritt 1 - Paket über conda oder pip installieren bei aktiven virtuellen Umgebung
+Schritt 1 - Paket über conda oder pip installieren bei aktiver virtueller Umgebung
 
 Mit conda (wenn über conda verfügbar):
 
@@ -178,16 +178,13 @@ Schritt 1 - environment.yaml anpassen
 Hinzuzufügendes Paket unter dependencies in der environments.yaml Datei aufführen
 
 Schritt 2 - Virtuelle Umgebung updaten
+
 Um die virtuelle Umgebung zu aktualisieren, stelle sicher, dass du dich im entsprechenden Projektverzeichnis befindest,
 in dem sich die environment.yaml Datei befindet. Führe dann den folgenden Befehl aus:
 
 `conda env update -n radar_env --file environment.yaml --prune`
 
 
-Nach dem Updaten der Umgebung darf das anschließende Pushen nicht vergessen werden! Durch das pullen oder fetchen der anderen Mitglieder des Repos können dann die Änderungen an der virtuellen Umgebung lokal integriert werden. Dafür ist ebenfalls das Updaten des Repos lokal notwendig. Dabei muss wieder sichergestellt werden, dass man sich im entsprechenden Projektverzeichnis befinden. Anschließend muss der folgende Befehl ausgeführt werden:
+Nach dem Updaten der Umgebung darf das anschließende Pushen nicht vergessen werden! Durch das Pullen oder Fetchen der anderen Mitglieder des Repos können dann die Änderungen an der virtuellen Umgebung lokal integriert werden. Dafür ist ebenfalls das Updaten des Repos lokal notwendig. Dabei muss wieder sichergestellt werden, dass man sich im entsprechenden Projektverzeichnis befinden. Anschließend muss erneut der folgende Befehl ausgeführt werden:
 
-`conda env update --file environment.yaml`
-
-
-
-
+`conda env update -n radar_env --file environment.yaml --prune`
