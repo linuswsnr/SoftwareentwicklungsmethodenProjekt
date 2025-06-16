@@ -1,21 +1,21 @@
 import os
 import sys
-from radarscenes_classifier import data_preprocessing, training, evaluation
 import joblib
+from radarscenes_classifier import data_preprocessing, training, evaluation
 
 sys.path.insert(0,
                 os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-DATASET_DIR = os.path.join("dataset", "radar_scenes_pickles")
-# REMOVE_CLASSES = [9, 11]  # Beispiel: Klasse 9 und 11 ausschließen (optional)
-REMOVE_CLASSES = []  # Beispiel: Klasse 9 und 11 ausschließen (optional)
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.insert(
+    0, os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+)
 
+DATASET_DIR = os.path.join("dataset", "radar_scenes_pickles")
+REMOVE_CLASSES = []  # Beispiel: Klasse 9 und 11 ausschließen (optional)
 MODEL_PATH = os.path.join("models", "model_lightgbm.pkl")
 ENCODER_PATH = os.path.join("models", "label_encoder.pkl")
-
-# Pfad einem bereits existierenden Train-Test-Split
-SPLIT_DIR = "dataset/split_train_test"
-
+SPLIT_DIR = "dataset/split_train_test"  # Pfad zu Train-Test-Split
 
 if __name__ == "__main__":
     # Daten laden und vorverarbeiten
@@ -31,11 +31,17 @@ if __name__ == "__main__":
 
     # Modell trainieren
     model, label_enc = training.train_model(df_train)
+
     # Model und Encoder speichern
     os.makedirs("models", exist_ok=True)
     joblib.dump(model, MODEL_PATH)
     joblib.dump(label_enc, ENCODER_PATH)
     print(f"Modell gespeichert nach {MODEL_PATH}")
     print(f"Label-Encoder gespeichert nach {ENCODER_PATH}")
-    # (Optional) Trainingsergebnis auf Trainingsdaten ausgeben:
-    evaluation.evaluate_model(model, df_train, label_enc)
+
+    # Optional: Trainingsergebnis auf Trainingsdaten ausgeben
+    evaluation.evaluate_model(
+        model, df_train, label_enc,
+        output_path="results/train_evaluation.json",
+        plot_path="results/train_confusion_matrix.png"
+    )
