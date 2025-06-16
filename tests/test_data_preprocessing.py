@@ -16,6 +16,7 @@ def test_prepare_sequence_data(tmp_path):
     df = pd.DataFrame({"label_id": [0, 9, 11]})
     pkl_file = tmp_path / "dummy.pkl"
     df.to_pickle(pkl_file)
+
     # remove_classes=[9,11] -> es sollte nur Label 0 ("CAR") übrig bleiben
     combined = dp.prepare_sequence_data(
         pickle_dir=tmp_path,

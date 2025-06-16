@@ -13,17 +13,15 @@ Die Klassifikation erfolgt für jeden Zeitstempel, basierend auf Radar-Detektion
 - CAR 
 - TWO-WHEELER  
 - PEDESTRIAN  
-- Infrastructure 
+- INFRASTRUCTURE
 
 ---
 
 ## ⚙️ Verwendete Technologien
 
 - Python
-- NumPy & Pandas
-- Scikit-learn (optional: TensorFlow / PyTorch)
 - Git & GitHub
-- SCRUM für Projektmanagement
+- Jira 
 
 ---
 
@@ -49,7 +47,7 @@ Die Performance des Klassifikationsalgorithmus wird anhand folgender Metriken ge
 - Michael Keil
 - Parsa Arzani
 - Selahaddin Öz
-- Linus Wansner
+- Linus Wasner
 
 ---
 
