@@ -1,3 +1,4 @@
+
 # Hilfsfunktionen (z.B. Logging, allgemeine Helfer)
 # Sammelt Hilfsfunktionen, die in mehreren Modulen benötigt werden
 # (z.B. eine Funktion zum Speichern/Laden von Modellen,
