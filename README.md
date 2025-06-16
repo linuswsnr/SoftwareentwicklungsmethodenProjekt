@@ -96,7 +96,7 @@ Wenn du die Option „Register Miniconda3 as my default Python 3.12” auswähls
 
 Auswirkungen:
 
-- Standard-Python-Interpreter: Der Python-Interpreter von Miniconda (Python 3.12) wird als Standard für alle Programme festgelegt, wenn keine spezifische Conda-Umgebung aktiviert ist.
+1) Standard-Python-Interpreter: Der Python-Interpreter von Miniconda (Python 3.12) wird als Standard für alle Programme festgelegt, wenn keine spezifische Conda-Umgebung aktiviert ist.
 
 - Virtuelle Umgebungen bleiben unberührt: Wenn du eine Conda-Umgebung mit einer anderen Python-Version (z. B. Python 3.10) aktivierst, wird der Interpreter dieser Umgebung genutzt, unabhängig vom Standard-Interpreter von Miniconda.
 
@@ -113,6 +113,7 @@ Auswirkungen:
 - Komplexere Verwaltung: Die parallele Nutzung mehrerer Python-Versionen wird komplizierter, da Miniconda außerhalb aktivierter Umgebungen als Standard-Interpreter fungiert.
 
 Empfehlung: Verzichte darauf, Miniconda dem PATH hinzuzufügen. Nutze stattdessen den Anaconda Prompt oder PowerShell, um Conda-Umgebungen gezielt zu aktivieren. So bleibt deine Systemumgebung sauber und stabil, und du vermeidest Versionskonflikte.
+
 
 Diese Einrichtung sorgt für ein sicheres und einheitliches Arbeiten der Projektteilnehmer mit Miniconda als Umgebungsmanager, ohne das eigene System zu beeinflussen. 
 
