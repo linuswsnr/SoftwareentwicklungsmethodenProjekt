@@ -74,7 +74,7 @@ for fp in pkl_files:
         problem_files.append(fp)
 
 if problem_files:
-    print("⚠️  Dateien ohne 'label_id' oder unbekannte Struktur:")
+    print(" Dateien ohne 'label_id' oder unbekannte Struktur:")
     for fp in problem_files:
         print("   ", fp)
     print()
@@ -85,7 +85,7 @@ if problem_files:
 # -------------------------------------------------
 labels_df = pd.DataFrame({"label": labels})
 
-print("📊 Gesamte Verteilung aller Labels:")
+print(" Gesamte Verteilung aller Labels:")
 print(labels_df["label"].value_counts(), "\n")
 
 
@@ -103,10 +103,10 @@ train_df, test_df = train_test_split(
 # -------------------------------------------------
 # 6) Verteilung in Train und Test ausgeben
 # -------------------------------------------------
-print("👟 Trainingsmenge:")
+print(" Trainingsmenge:")
 print(train_df["label"].value_counts(), "\n")
 
-print("🧪 Testmenge:")
+print(" Testmenge:")
 print(test_df["label"].value_counts(), "\n")
 
 
@@ -119,6 +119,6 @@ TEST_OUT = r"D:\dataset\RadarScenes_pickles\test_labels.pkl"
 train_df.to_pickle(TRAIN_OUT)
 test_df.to_pickle(TEST_OUT)
 
-print("✅  Dateien geschrieben:")
+print(" Dateien geschrieben:")
 print("   ", TRAIN_OUT)
 print("   ", TEST_OUT)
