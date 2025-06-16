@@ -92,7 +92,7 @@ Folgendes wird bei der Installation empfohlen / nicht empfohlen oder ist optiona
 #### Optional:
 - Register Miniconda3 as my default Python 3.12
 
-→ Wenn du die Option „Register Miniconda3 as my default Python 3.12” auswählst, wird Miniconda3 als Standard-Python-Interpreter auf deinem System registriert. Dies bedeutet, dass alle Programme, die Python benötigen (wie z. B. VSCode oder die Kommandozeile), automatisch den Python 3.12-Interpreter von Miniconda verwenden.
+Wenn du die Option „Register Miniconda3 as my default Python 3.12” auswählst, wird Miniconda3 als Standard-Python-Interpreter auf deinem System registriert. Dies bedeutet, dass alle Programme, die Python benötigen (wie z. B. VSCode oder die Kommandozeile), automatisch den Python 3.12-Interpreter von Miniconda verwenden.
 
 Auswirkungen:
 
@@ -100,19 +100,19 @@ Auswirkungen:
 
 - Virtuelle Umgebungen bleiben unberührt: Wenn du eine Conda-Umgebung mit einer anderen Python-Version (z. B. Python 3.10) aktivierst, wird der Interpreter dieser Umgebung genutzt, unabhängig vom Standard-Interpreter von Miniconda.
 
-Empfehlung: Diese Option ist optional, da sie den Standard-Python-Interpreter auf deinem System ändert, aber keine Auswirkungen auf die Nutzung von Conda-Umgebungen hat, die jeweils ihre eigene Python-Version verwenden.
 
 #### Nicht empfohlen:
 - Add Miniconda3 to my PATH environment variable
 
-→ Das Hinzufügen von Miniconda zum PATH-Umgebungsvariablen kann zu Konflikten mit anderen Python-Installationen oder Programmen führen, die bereits in deinem Systempfad vorhanden sind. Diese Konflikte können dazu führen, dass verschiedene Python-Versionen miteinander in Konflikt geraten und unerwartete Ergebnisse oder Fehler auftreten.
+Das Hinzufügen von Miniconda zum PATH-Umgebungsvariablen kann zu Konflikten mit anderen Python-Installationen oder Programmen führen, die bereits in deinem Systempfad vorhanden sind. Diese Konflikte können dazu führen, dass verschiedene Python-Versionen miteinander in Konflikt geraten und unerwartete Ergebnisse oder Fehler auftreten.
 
-Auswirkungen: 
-Potenzielle Konflikte: Wenn du andere Python-Versionen auf deinem System hast, könnte das Hinzufügen von Miniconda zum PATH dazu führen, dass die falsche Python-Version verwendet wird.
+Auswirkungen:
 
-Komplexere Verwaltung: Die Verwaltung mehrerer Python-Versionen wird schwieriger, da Miniconda als Standard-Interpreter verwendet wird, wenn keine spezifische Conda-Umgebung aktiv ist.
+- Potenzielle Konflikte: Andere installierte Python-Versionen könnten von Miniconda überschrieben oder beeinträchtigt werden, was zu unerwartetem Verhalten führen kann.
 
-Empfehlung: Statt Miniconda zum PATH hinzuzufügen, wird empfohlen, den Anaconda Prompt oder PowerShell zu verwenden, um Conda-Umgebungen zu aktivieren. Dadurch bleibt die Systemumgebung unberührt und Konflikte werden vermieden.
+- Komplexere Verwaltung: Die parallele Nutzung mehrerer Python-Versionen wird komplizierter, da Miniconda außerhalb aktivierter Umgebungen als Standard-Interpreter fungiert.
+
+Empfehlung: Verzichte darauf, Miniconda dem PATH hinzuzufügen. Nutze stattdessen den Anaconda Prompt oder PowerShell, um Conda-Umgebungen gezielt zu aktivieren. So bleibt deine Systemumgebung sauber und stabil, und du vermeidest Versionskonflikte.
 
 Diese Einrichtung sorgt für ein sicheres und einheitliches Arbeiten der Projektteilnehmer mit Miniconda als Umgebungsmanager, ohne das eigene System zu beeinflussen. 
 
