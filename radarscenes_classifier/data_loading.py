@@ -18,6 +18,7 @@ def load_sequence_raw(seq_path: str) -> pd.DataFrame:
             for name in radar_data.dtype.names
         }
     df = pd.DataFrame(data_dict)
+    # Sequenz-ID als Spalte hinzufügen
     df["sequence"] = os.path.basename(seq_path)
     return df
 

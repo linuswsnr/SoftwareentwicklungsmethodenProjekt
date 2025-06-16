@@ -1,7 +1,8 @@
 import os
 import sys
+from radarscenes_classifier import data_preprocessing
+from radarscenes_classifier import evaluation
 import joblib
-from radarscenes_classifier import data_preprocessing, evaluation
 
 
 # Projektpfad hinzufügen (für relative Importe)
@@ -9,12 +10,17 @@ sys.path.insert(
     0, os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 )
 
+sys.path.insert(0,
+                os.path.abspath(
+                    os.path.join(os.path.dirname(__file__), "..")))
+
 DATASET_DIR = os.path.join("dataset", "radar_scenes_pickles")
 MODEL_PATH = os.path.join("models", "model_lightgbm.pkl")
 ENCODER_PATH = os.path.join("models", "label_encoder.pkl")
 
 # Optional: Liste von Test-Sequenznummern, falls
 # nur Teilmenge getestet werden soll
+
 TEST_SEQS = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]  # None = alle nutzen
 
 if __name__ == "__main__":

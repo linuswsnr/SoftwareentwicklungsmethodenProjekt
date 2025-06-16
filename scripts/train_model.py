@@ -3,6 +3,8 @@ import sys
 import joblib
 from radarscenes_classifier import data_preprocessing, training, evaluation
 
+sys.path.insert(0,
+                os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 sys.path.insert(

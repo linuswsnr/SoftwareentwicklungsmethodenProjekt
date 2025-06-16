@@ -54,9 +54,21 @@ def prepare_sequence_data(
     remove_features: Optional[List[str]] = None
 ) -> tuple[pd.DataFrame, pd.DataFrame]:
     """
-    Lädt Pickle-Dateien aus dem Verzeichnis und
-    bereitet Trainings-/Testdaten vor.
+    Lädt pkl-Dateien aus Verzeichnis und vereinigt sie in einem DataFrame.
+
+    Parameter:
+      - pickle_dir: Verzeichnis mit Pickle-Dateien
+      - remove_classes: Liste von Label-IDs, die ausgeschlossen werden sollen
+      - limit_n_files: Optional: Anzahl der zu ladenden Dateien begrenzen
+      - split_ration: Definiert Trains- und Testdaten-Verhältnis
+      - use_existing_split: Möglichkeit existierenden Split zu verwenden
+      - split_dir: Pfad zum existierenden Split
+
+    Rückgabe:
+      Zwei Panda Dataframes mit Trainings- und Testdaten, mit
+      vereinheitlichten Labels
     """
+
     train_path = os.path.join(split_dir, "train.pkl")
     test_path = os.path.join(split_dir, "test.pkl")
 
@@ -113,6 +125,7 @@ def prepare_sequence_data(
         os.makedirs(split_dir, exist_ok=True)
         df_train.to_pickle(train_path)
         df_test.to_pickle(test_path)
+
         print("Neuer Split als Pickle gespeichert.")
 
     return df_train, df_test

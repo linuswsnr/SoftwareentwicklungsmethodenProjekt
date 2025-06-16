@@ -19,8 +19,11 @@ def test_prepare_sequence_data(tmp_path):
 
     # remove_classes=[9,11] -> es sollte nur Label 0 ("CAR") übrig bleiben
     combined = dp.prepare_sequence_data(
-        pickle_dir=tmp_path, remove_classes=[], limit_n_files=1
+        pickle_dir=tmp_path,
+        remove_classes=[],
+        limit_n_files=1
     )
+
     assert combined["label_id"].tolist() == ["CAR"]
 
 
@@ -28,5 +31,7 @@ def test_prepare_sequence_data_no_files(tmp_path):
     # Leeres Verzeichnis -> sollte FileNotFoundError werfen
     with pytest.raises(FileNotFoundError):
         dp.prepare_sequence_data(
-            pickle_dir=tmp_path, remove_classes=[], limit_n_files=1
+            pickle_dir=tmp_path,
+            remove_classes=[],
+            limit_n_files=1
         )
