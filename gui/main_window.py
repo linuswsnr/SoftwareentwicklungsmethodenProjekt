@@ -1,67 +1,46 @@
 from PySide6.QtWidgets import (
-    QMainWindow, QWidget, QLabel, QPushButton,
-    QVBoxLayout, QFrame, QFileDialog
+    QMainWindow, QFileDialog, QLabel
 )
-from PySide6.QtGui import QCloseEvent
-# Import der ImageViewer-Komponente (siehe image_viewer.py)
-from gui.image_viewer import ImageViewer
+from PySide6.QtGui import QPixmap
+from PySide6.QtCore import Qt
+from gui.main_window_ui import Ui_MainWindow
+import os
 
 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Ergebnisvisualisierung")
+        self.ui = Ui_MainWindow()
+        self.ui.setupUi(self)
 
-        # Zentrales Widget und Hauptlayout
-        central_widget = QWidget(self)
-        self.setCentralWidget(central_widget)
-        layout = QVBoxLayout(central_widget)
-        layout.setContentsMargins(10, 10, 10, 10)
-
-        # Titel-Label (Überschrift)
-        title_label = QLabel("Ergebnisvisualisierung")
-        title_label.setStyleSheet("font-weight: bold; font-size: 16pt;")
-        layout.addWidget(title_label)
-
-        # Info-Label (Beschreibungstext)
-        info_text = (
-            "Diese Anwendung ermöglicht es, Ergebnisgrafiken "
-            "(z.B. Konfusionsmatrizen) anzuzeigen.\n"
-            "Wählen Sie dazu eine Bilddatei aus dem Ergebnis-Ordner aus."
+        # Button-Klicks mit Funktionen verbinden
+        self.ui.konf_laden_pushbotten.clicked.connect(
+            lambda: self.load_image(self.ui.konfusionsmatrix_label)
         )
-        info_label = QLabel(info_text)
-        info_label.setStyleSheet("font-size: 10pt;")
-        info_label.setWordWrap(True)
-        layout.addWidget(info_label)
+        self.ui.metrik_laden_pushbotton.clicked.connect(
+            lambda: self.load_image(self.ui.metriken_label)
+        )
+        self.ui.konf_text_laden_pushbutton.clicked.connect(
+            lambda: self.load_image(self.ui.konf_text_label)
+        )
+        self.ui.metriken_text_laden_pushbutton.clicked.connect(
+            lambda: self.load_image(self.ui.metriken_text_label)
+        )
+        self.ui.punktewolke_laden_pushbutton.clicked.connect(
+            lambda: self.load_image(self.ui.punktewolke_bild_label)
+        )
+        # Export-Funktion wird später von einem anderen Teammitglied ergänzt
+        self.ui.export_pushbutton.clicked.connect(self.export_pdf_placeholder)
 
-        # Optionale Trennlinie
-        separator = QFrame()
-        separator.setFrameShape(QFrame.HLine)
-        separator.setFrameShadow(QFrame.Sunken)
-        layout.addWidget(separator)
-
-        # Button zum Öffnen des Datei-Dialogs
-        open_button = QPushButton("Bild laden...")
-        open_button.clicked.connect(self.open_image_file)
-        layout.addWidget(open_button)
-
-        # ImageViewer-Komponente für die Bildanzeige
-        self.image_viewer = ImageViewer()
-        self.image_viewer.load_images()
-        layout.addWidget(self.image_viewer)
-
-    def open_image_file(self):
-        """
-        Öffnet einen Dateidialog, damit der Nutzer ein Bild wählen kann
-        und zeigt das gewählte Bild im ImageViewer an.
-        """
-        file_types = "Bilddateien (*.png *.jpg *.jpeg *.bmp)"
-        start_dir = ""  # z. B. "./results"
+    def load_image(self, label: QLabel):
         file_path, _ = QFileDialog.getOpenFileName(
-            self, "Bild auswählen", start_dir, file_types
+            self, "Bild auswählen", "", "Bilder (*.png *.jpg *.jpeg *.bmp)"
         )
-        if file_path:
-            self.image_viewer.set_image(file_path)
+        if file_path and os.path.exists(file_path):
+            pixmap = QPixmap(file_path)
+            label.setPixmap(pixmap.scaled(label.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
+        else:
+            label.setText("Bild konnte nicht geladen werden")
 
-    def closeEvent(self, event: QCloseEvent):
-        event.accept()
+    def export_pdf_placeholder(self):
+        print("Export-Funktion wird noch implementiert.")
