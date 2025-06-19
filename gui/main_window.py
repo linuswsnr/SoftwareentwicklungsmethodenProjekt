@@ -38,7 +38,8 @@ class MainWindow(QMainWindow):
         )
         if file_path and os.path.exists(file_path):
             pixmap = QPixmap(file_path)
-            label.setPixmap(pixmap.scaled(label.size(), Qt.KeepAspectRatio, Qt.SmoothTransformation))
+            label.setPixmap(pixmap.scaled(label.size(),
+                            Qt.KeepAspectRatio, Qt.SmoothTransformation))
         else:
             label.setText("Bild konnte nicht geladen werden")
 
