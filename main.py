@@ -8,6 +8,7 @@ if __name__ == "__main__":
 
     # Hauptfenster erstellen und anzeigen
     window = MainWindow()
+    window.showMaximized()
     window.show()
 
     # Event-Loop starten
