@@ -24,12 +24,12 @@ ENCODER_PATH = os.path.join(BASE_DIR, "..", "models", "label_encoder.pkl")
 
 CAMERA_IMG_DIR = os.path.join(
     BASE_DIR,
-     "..",
-     "dataset", 
-     "radar_scenes", 
-     "data", 
-     f"sequence_{SEQUENCE_NUM}", 
-     "camera"
+    "..",
+    "dataset", 
+    "radar_scenes", 
+    "data", 
+    f"sequence_{SEQUENCE_NUM}", 
+    "camera"
 )
 RESULTS_DIR = os.path.join(BASE_DIR, "..", "results")
 os.makedirs(RESULTS_DIR, exist_ok=True)
@@ -50,13 +50,16 @@ chosen_timestamp = random.choice(unique_timestamps)
 points = df[df["timestamp"] == chosen_timestamp].copy()
 
 # Features vorbereiten (analog zur Modell-Trainingslogik in train_model())
-X = points.drop(columns=["sequence", "track_id", "uuid", "timestamp", "label_id"], errors="ignore")
+X = points.drop(
+    columns=["sequence", "track_id", "uuid", "timestamp", "label_id"], 
+    errors="ignore"
+)
 X = X.select_dtypes(include=["number"])
 
 
 # Radarpunkte klassifizieren
 preds_encoded = model.predict(X)
-preds = label_encoder.inverse_transform(preds_encoded) # Integer -> Strings
+preds = label_encoder.inverse_transform(preds_encoded)  # Integer -> Strings
 points["predicted_label"] = preds
 
 
