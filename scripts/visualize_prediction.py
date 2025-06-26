@@ -100,6 +100,7 @@ def find_closest_image(timestamp, image_dir):
     closest_ts = min(image_timestamps, key=lambda x: abs(x - timestamp))
     return os.path.join(image_dir, f"{closest_ts}.jpg")
 
+
 closest_img_path = find_closest_image(chosen_timestamp, CAMERA_IMG_DIR)
 
 # === Kamera-Bild ===
