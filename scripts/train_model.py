@@ -2,12 +2,11 @@ import os
 import sys
 import joblib
 
-
 sys.path.insert(0,
                 os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-from radarscenes_classifier import data_preprocessing, training, evaluation
+from radarscenes_classifier import data_preprocessing, training, evaluation # noqa: E402
 
 DATASET_DIR = os.path.join("dataset", "radar_scenes_pickles")
 REMOVE_CLASSES = []  # Beispiel: Klasse 9 und 11 ausschließen (optional)

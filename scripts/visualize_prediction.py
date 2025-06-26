@@ -11,11 +11,27 @@ SEQUENCE_NUM = 2  # Sequenznummer aus der eine Punktewolke klassifiziert wird
 SEQUENCE_NAME = f"sequence_{SEQUENCE_NUM}"
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
-PKL_PATH = os.path.join(BASE_DIR, "..", "dataset", "radar_scenes_pickles", f"DataSeq_{SEQUENCE_NUM}.pkl")
+PKL_PATH = os.path.join(
+    BASE_DIR,
+    "..",
+    "dataset",
+    "radar_scenes_pickles",
+    f"DataSeq_{SEQUENCE_NUM}.pkl"
+)
+
 MODEL_PATH = os.path.join(BASE_DIR, "..", "models", "model_lightgbm.pkl")
-ENCODER_PATH = os.path.join(BASE_DIR, "..","models", "label_encoder.pkl")
-CAMERA_IMG_DIR = os.path.join(BASE_DIR, "..","dataset", "radar_scenes", "data", f"sequence_{SEQUENCE_NUM}", "camera")
-RESULTS_DIR = os.path.join(BASE_DIR, "..","results")
+ENCODER_PATH = os.path.join(BASE_DIR, "..", "models", "label_encoder.pkl")
+
+CAMERA_IMG_DIR = os.path.join(
+    BASE_DIR,
+     "..",
+     "dataset", 
+     "radar_scenes", 
+     "data", 
+     f"sequence_{SEQUENCE_NUM}", 
+     "camera"
+)
+RESULTS_DIR = os.path.join(BASE_DIR, "..", "results")
 os.makedirs(RESULTS_DIR, exist_ok=True)
 
 
