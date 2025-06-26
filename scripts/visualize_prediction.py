@@ -64,13 +64,14 @@ for label in np.unique(preds):
                    color=label_colors.get(label, "black"),
                    alpha=0.7,
                    s=10)
-axs[0].set_xlabel("x [m]")
-axs[0].set_ylabel("y [m]")
+axs[0].set_xlabel("x [m], tangential zum Fahrzeug")
+axs[0].set_ylabel("y [m], lateral zum Fahrzeug")
 axs[0].legend()
-axs[0].set_title(f"Radar-Klassifikation @ {chosen_timestamp}")
+axs[0].set_title(f"Radar-Klassifikation @ Timestamp: {chosen_timestamp}")
 axs[0].grid(True)
 
-# Funktion zur Bestimmung des nächsten Kamerabilds
+# Funktion, die das Kamerabild mit dem zeitlich nächstgelegenen 
+# Timestamp zum gegebenen Timestamp findet
 def find_closest_image(timestamp, image_dir):
     image_files = [f for f in os.listdir(image_dir) if f.endswith(".jpg")]
     image_timestamps = [int(f.replace(".jpg", "")) for f in image_files]
