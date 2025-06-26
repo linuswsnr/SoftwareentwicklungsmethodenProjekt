@@ -89,19 +89,10 @@ axs[0].legend()
 axs[0].set_title(f"Radar-Klassifikation @ Timestamp: {chosen_timestamp}")
 axs[0].grid(True)
 
-
-def find_closest_image(timestamp, image_dir):
-    """
-    Funktion, die das Kamerabild mit dem zeitlich nächstgelegenen
-    Timestamp zum gegebenen Timestamp findet
-    """
-    image_files = [f for f in os.listdir(image_dir) if f.endswith(".jpg")]
-    image_timestamps = [int(f.replace(".jpg", "")) for f in image_files]
-    closest_ts = min(image_timestamps, key=lambda x: abs(x - timestamp))
-    return os.path.join(image_dir, f"{closest_ts}.jpg")
-
-
-closest_img_path = find_closest_image(chosen_timestamp, CAMERA_IMG_DIR)
+image_files = [f for f in os.listdir(CAMERA_IMG_DIR) if f.endswith(".jpg")]
+image_timestamps = [int(f.replace(".jpg", "")) for f in image_files]
+closest_ts = min(image_timestamps, key=lambda x: abs(x - chosen_timestamp))
+closest_img_path = os.path.join(CAMERA_IMG_DIR, f"{closest_ts}.jpg")
 
 # === Kamera-Bild ===
 try:
