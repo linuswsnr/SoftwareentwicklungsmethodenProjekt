@@ -31,7 +31,7 @@ class MainWindow(QMainWindow):
             lambda: self.load_image(self.ui.metriken_text_label)
         )
         self.ui.modell_info_laden_pushbutton.clicked.connect(
-            lambda: self.load_image(self.ui.modell_info_label)
+            lambda: self.load_image(self.ui.modell_und_parameter_inhalt_label)
         )
         self.ui.punktewolke_laden_pushbutton.clicked.connect(
             lambda: self.load_image(self.ui.punktewolke_bild_label)
