@@ -5,7 +5,18 @@ import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 import joblib
+<<<<<<< HEAD
 from radarscenes_classifier import data_preprocessing, training, evaluation, text_explanation
+=======
+
+sys.path.insert(0,
+                os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+from radarscenes_classifier import data_preprocessing  # noqa: E402
+from radarscenes_classifier import training  # noqa: E402
+from radarscenes_classifier import evaluation  # noqa: E402
+>>>>>>> 6f8229930961599f0ea1d6389b3ddc61c9661f93
 
 DATASET_DIR = os.path.join("dataset", "radar_scenes_pickles")
 REMOVE_CLASSES = []  # Beispiel: Klasse 9 und 11 ausschließen (optional)
