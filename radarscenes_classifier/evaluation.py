@@ -2,11 +2,23 @@ from sklearn.metrics import classification_report, confusion_matrix
 import pandas as pd
 import json
 import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
+
+# Import visualization libraries with error handling
+try:
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+    VISUALIZATION_AVAILABLE = True
+except ImportError:
+    print("Warning: matplotlib or seaborn not available. Visualization will be skipped.")
+    VISUALIZATION_AVAILABLE = False
 
 
 def plot_confusion_matrix(cm, labels, plot_path):
+    """Plot confusion matrix with log scaling."""
+    if not VISUALIZATION_AVAILABLE:
+        print("Visualization libraries not available. Skipping confusion matrix plot.")
+        return
+    
     # Log-Skalierung vorbereiten (0 wird zu 0.1)
     cm_log = np.log10(np.where(cm == 0, 0.1, cm))
 
@@ -39,7 +51,9 @@ def plot_classification_report(report_dict, labels, plot_path):
     Erstellt eine PNG-Grafik des Classification Reports
     (Precision, Recall, F1-Score, Support).
     """
-    import matplotlib.pyplot as plt
+    if not VISUALIZATION_AVAILABLE:
+        print("Visualization libraries not available. Skipping classification report plot.")
+        return
 
     metrics = ["precision", "recall", "f1-score", "support"]
     values = {m: [report_dict[label][m] for label in labels]
@@ -92,20 +106,32 @@ def evaluate_model(model, df: pd.DataFrame, label_encoder,
 
     # Falls gewünscht: in Datei schreiben
     if output_path:
-        output_data = {
-            "classification_report": report_dict,
-            "confusion_matrix": cm_list,
-            "labels": target_names.tolist()
-        }
-        with open(output_path, "w") as f:
-            json.dump(output_data, f, indent=2)
+        try:
+            output_data = {
+                "classification_report": report_dict,
+                "confusion_matrix": cm_list,
+                "labels": target_names.tolist()
+            }
+            with open(output_path, "w", encoding='utf-8') as f:
+                json.dump(output_data, f, indent=2)
+            print(f"Results saved to: {output_path}")
+        except Exception as e:
+            print(f"Error saving results to {output_path}: {e}")
 
     # Visualisierung speichern
-    if plot_path:
-        # Konfusionsmatrix
-        plot_confusion_matrix(cm, target_names,
-                              plot_path.replace(".png", "_confusion.png"))
+    if plot_path and VISUALIZATION_AVAILABLE:
+        try:
+            # Konfusionsmatrix
+            plot_confusion_matrix(cm, target_names,
+                                  plot_path.replace(".png", "_confusion.png"))
 
-        # Klassifikationsmetriken
-        plot_classification_report(report_dict, target_names,
-                                   plot_path.replace(".png", "_metrics.png"))
+            # Klassifikationsmetriken
+            plot_classification_report(report_dict, target_names,
+                                       plot_path.replace(".png", "_metrics.png"))
+            print(f"Plots saved to: {plot_path.replace('.png', '_confusion.png')} and {plot_path.replace('.png', '_metrics.png')}")
+        except Exception as e:
+            print(f"Error creating plots: {e}")
+    elif plot_path and not VISUALIZATION_AVAILABLE:
+        print("Skipping plot creation due to missing visualization libraries.")
+
+
