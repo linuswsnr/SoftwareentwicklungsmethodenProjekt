@@ -4,7 +4,7 @@ from PySide6.QtWidgets import (
 from PySide6.QtGui import QPixmap
 from PySide6.QtCore import Qt
 from gui.main_window_ui import Ui_MainWindow
-from PySide6.QtWidgets import QFileDialog, QMessageBox
+from PySide6.QtWidgets import QMessageBox
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
 from reportlab.lib.utils import ImageReader
@@ -30,11 +30,14 @@ class MainWindow(QMainWindow):
         self.ui.metriken_text_laden_pushbutton.clicked.connect(
             lambda: self.load_image(self.ui.metriken_text_label)
         )
+        self.ui.modell_info_laden_pushbutton.clicked.connect(
+            lambda: self.load_image(self.ui.modell_info_label)
+        )
         self.ui.punktewolke_laden_pushbutton.clicked.connect(
             lambda: self.load_image(self.ui.punktewolke_bild_label)
         )
         # Export-Funktion wird später von einem anderen Teammitglied ergänzt
-        self.ui.export_pushbutton.clicked.connect(self.export_pdf_placeholder)
+        self.ui.export_pushbutton.clicked.connect(self.export_pdf)
 
     def load_image(self, label: QLabel):
         file_path, _ = QFileDialog.getOpenFileName(
@@ -47,8 +50,8 @@ class MainWindow(QMainWindow):
         else:
             label.setText("Bild konnte nicht geladen werden")
 
-    def export_pdf_placeholder(self):
-        file_path, _ = QFileDialog.getSaveFileName(self, "PDF speichern", "", "PDF-Dateien (*.pdf)")
+    def export_pdf(self):
+        file_path, _ = QFileDialog.getSaveFileName(self, "PDF speichern", "", "PDF-Dateien (*.pdf)")  # noqa: E501
         if not file_path:
             return
 
@@ -60,7 +63,7 @@ class MainWindow(QMainWindow):
 
             # Titel
             c.setFont("Helvetica-Bold", 20)
-            c.drawCentredString(width / 2, y_position, "Die Ergebnisse zu Reporten")
+            c.drawCentredString(width / 2, y_position, "Ergebnisse der LightGBM Klassifikation")  # noqa: E501
             y_position -= 60  # Abstand nach dem Titel
 
             # Liste deiner QLabel-Bildquellen
@@ -90,13 +93,13 @@ class MainWindow(QMainWindow):
                         y_position = height - margin
 
                     y_position -= display_height
-                    c.drawImage(img, margin, y_position, width=max_width, height=display_height)
+                    c.drawImage(img, margin, y_position, width=max_width, height=display_height)  # noqa: E501
                     y_position -= 30  # Abstand nach Bild
 
                     os.remove(temp_path)
 
             c.save()
-            QMessageBox.information(self, "Erfolg", f"PDF erfolgreich gespeichert:\n{file_path}")
+            QMessageBox.information(self, "Erfolg", f"PDF erfolgreich gespeichert:\n{file_path}")  # noqa: E501
 
         except Exception as e:
-            QMessageBox.critical(self, "Fehler", f"PDF-Export fehlgeschlagen:\n{str(e)}")
+            QMessageBox.critical(self, "Fehler", f"PDF-Export fehlgeschlagen:\n{str(e)}")  # noqa: E501
