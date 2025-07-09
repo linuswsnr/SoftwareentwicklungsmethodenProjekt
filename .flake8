@@ -2,3 +2,7 @@
 [flake8]
 exclude =
     gui/main_window_ui.py
+    radarscenes_classifier/evaluation.py
+    radarscenes_classifier/text_explanation.py
+    scripts/prepare_data.py
+    scripts/test_model.py
